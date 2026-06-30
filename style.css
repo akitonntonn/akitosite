@@ -2855,11 +2855,17 @@ address,
 }
 
 /* Work service cards */
-.work-services {
+.job-actions {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 12px;
   margin-top: 40px;
+}
+
+.job-actions .button {
+  flex: 1 1 200px;
+  min-height: 52px;
+  font-size: 0.9rem;
 }
 
 .work-service-card {
