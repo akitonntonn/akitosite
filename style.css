@@ -2780,3 +2780,76 @@ address,
     text-align: center;
   }
 }
+
+/* =====================================================================
+   Mobile fit fixes — keep buttons, their hard shadows, and text from
+   being clipped or breaking awkwardly on phone-sized screens.
+   ===================================================================== */
+@media (max-width: 640px) {
+  /* Grid/flex children default to min-width:auto and refuse to shrink,
+     pushing their parent a few px past the viewport and clipping the
+     right-side hard shadow of full-width buttons. Let them shrink. */
+  .hero-content,
+  .hero-main,
+  .hero-card,
+  .bar-panel,
+  .bar-panel > div,
+  .bar-info,
+  .music-layout,
+  .work-video-feature,
+  .work-video-feature__copy,
+  .card,
+  .media-card,
+  .track-card,
+  .track-card__content {
+    min-width: 0;
+  }
+
+  /* Never let a button row spill past the screen edge. */
+  .hero-content,
+  .hero-main,
+  .cta-row,
+  .contact-actions,
+  .bar-info {
+    max-width: 100%;
+  }
+
+  /* The address was a single unwrappable line and got clipped by the
+     panel's overflow:hidden. Allow it to wrap. */
+  .bar-info address {
+    overflow-wrap: anywhere;
+    line-height: 1.75;
+  }
+
+  /* The portal text/title were overflowing their grid column (min-width:
+     auto) into the space reserved for the dice image, which forced the
+     title and blurb to break with a lone trailing character. Trim the dice
+     and its reserved space a touch, constrain the text to its column, and
+     size the title so the title and blurb each sit on one clean line. */
+  .game-portal {
+    padding-right: 64px;
+  }
+  .game-portal__visual {
+    width: 54px;
+    right: 8px;
+  }
+  .game-portal__label,
+  .game-portal__title,
+  .game-portal__text {
+    min-width: 0;
+  }
+  .game-portal__title {
+    max-width: none;
+    font-size: clamp(1.5rem, 6.4vw, 2.4rem);
+  }
+  .game-portal__text {
+    max-width: none;
+    overflow-wrap: anywhere;
+    font-size: clamp(0.74rem, 3.6vw, 0.86rem);
+  }
+
+  /* The Apple Music tag was wrapping onto two lines inside the card. */
+  .music-layout .track-card .tag {
+    white-space: nowrap;
+  }
+}
