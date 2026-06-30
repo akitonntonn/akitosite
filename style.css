@@ -2853,3 +2853,58 @@ address,
     white-space: nowrap;
   }
 }
+
+/* Work service cards */
+.work-services {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 40px;
+}
+
+.work-service-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  background: var(--surface-raised, #1a1a1a);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.work-service-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.work-service-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.work-service-body {
+  flex: 1;
+}
+
+.work-service-body h3 {
+  margin: 0 0 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary, #fff);
+}
+
+.work-service-body p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-secondary, rgba(255,255,255,0.55));
+  line-height: 1.4;
+}
+
+.work-service-arrow {
+  font-size: 1.1rem;
+  color: var(--text-secondary, rgba(255,255,255,0.4));
+  flex-shrink: 0;
+}
