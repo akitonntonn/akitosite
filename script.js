@@ -33,6 +33,14 @@ const workCategories = [
         buttonText: "見る",
         external: true,
       },
+      {
+        title: "スーパーマルチ診断",
+        description: "MBTI、ビッグファイブ、動物占い、風水、血液型診断がまとめてできます。",
+        tag: "Web / Tools",
+        url: "https://personaly.pages.dev/",
+        buttonText: "見る",
+        external: true,
+      },
     ],
   },
   {
