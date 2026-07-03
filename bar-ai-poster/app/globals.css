@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: #05050b;
+  color: #f5f3ff;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* 縦スクロールでのゴムバウンドを抑え、アプリらしい見た目に */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@layer components {
+  /* glassmorphism の基本ガラス面 */
+  .glass {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.03) 100%
+    );
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  /* ネオン文字（ロゴ／見出し用） */
+  .neon-text {
+    text-shadow:
+      0 0 8px rgba(192, 132, 252, 0.7),
+      0 0 20px rgba(139, 92, 246, 0.5),
+      0 0 40px rgba(59, 130, 246, 0.3);
+  }
+
+  /* グラデーション文字 */
+  .gradient-text {
+    background: linear-gradient(90deg, #f472b6, #c084fc, #60a5fa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* プライマリ CTA ボタン */
+  .btn-neon {
+    position: relative;
+    background: linear-gradient(90deg, #ec4899, #a855f7, #3b82f6);
+    box-shadow:
+      0 0 20px rgba(168, 85, 247, 0.5),
+      0 8px 24px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+  }
+  .btn-neon:hover {
+    filter: brightness(1.08);
+    box-shadow:
+      0 0 32px rgba(168, 85, 247, 0.75),
+      0 10px 30px rgba(0, 0, 0, 0.45);
+  }
+  .btn-neon:active {
+    transform: scale(0.98);
+  }
+  .btn-neon:disabled {
+    filter: grayscale(0.6) brightness(0.6);
+    box-shadow: none;
+    cursor: not-allowed;
+  }
+
+  /* セカンダリ（ガラス）ボタン */
+  .btn-glass {
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  }
+  .btn-glass:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  .btn-glass:active {
+    transform: scale(0.98);
+  }
+
+  /* シマーする光沢（プログレスバー等） */
+  .shimmer-bar {
+    background: linear-gradient(
+      90deg,
+      rgba(236, 72, 153, 0.9),
+      rgba(168, 85, 247, 0.9),
+      rgba(59, 130, 246, 0.9)
+    );
+    background-size: 200% 100%;
+  }
+}
+
+/* スクロールバーを控えめに */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(168, 85, 247, 0.4);
+  border-radius: 999px;
+}

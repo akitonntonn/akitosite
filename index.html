@@ -20,10 +20,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="style.css?v=20260703-3" />
   </head>
   <body>
     <header class="site-header" aria-label="サイトヘッダー">
@@ -36,7 +37,7 @@
         <a href="#game">Game</a>
         <a href="#work">Work</a>
         <a href="#job">Job</a>
-        <a href="#music">Music</a>
+        <a href="#music" data-mobile-target="#mobilePortfolioTabs">Music</a>
         <a href="#media">Media</a>
         <a href="#bar">Bar &</a>
       </nav>
@@ -125,9 +126,10 @@
             <p>一人でも多くの人に笑顔を。</p>
           </div>
           <div class="work-video-feature__media">
-            <video src="assets/videos/bar-shift.mov" muted loop playsinline autoplay preload="metadata"></video>
+            <video src="assets/videos/bar-shift-10s-mobile.m4v" muted loop playsinline autoplay preload="metadata"></video>
           </div>
         </article>
+        <div id="mobilePortfolioTabs" class="mobile-tabs" aria-label="スマホ用作品タブ"></div>
         <div id="workContainer" class="category-stack"></div>
       </section>
 
@@ -214,10 +216,10 @@
             </div>
             <div class="bar-photos" aria-label="bar &の内装写真">
               <figure>
-                <img src="assets/bar/interior-lounge.jpeg" alt="bar & ~and~のソファ席とダーツがある内装" loading="lazy" />
+                <img src="assets/bar/interior-lounge.jpeg" alt="bar & ~and~のソファ席とダーツがある内装" loading="eager" />
               </figure>
               <figure>
-                <img src="assets/bar/interior-counter.jpeg" alt="bar & ~and~のカウンターと青い照明の内装" loading="lazy" />
+                <img src="assets/bar/interior-counter.jpeg" alt="bar & ~and~のカウンターと青い照明の内装" loading="eager" />
               </figure>
             </div>
           </div>
@@ -266,6 +268,6 @@
       <a href="#top">Back to top</a>
     </footer>
 
-    <script src="script.js?v=20260701-2"></script>
+    <script src="script.js?v=20260703-3"></script>
   </body>
 </html>

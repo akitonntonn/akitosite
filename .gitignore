@@ -1,0 +1,15 @@
+.DS_Store
+*.log
+.env
+.env.*
+
+# JavaScript / Next.js build artifacts
+node_modules/
+.next/
+out/
+dist/
+
+# Keep bar-ai-poster source files visible, but never commit generated weight.
+bar-ai-poster/node_modules/
+bar-ai-poster/.next/
+bar-ai-poster/out/

@@ -1,0 +1,12 @@
+.DS_Store
+bar-ai-poster/node_modules/
+bar-ai-poster/.next/
+bar-ai-poster/out/
+
+# Original high-resolution source images are kept in the repo but the site uses
+# assets/create-optimized/*.jpg for the gallery.
+assets/create/*.png
+
+# The site uses assets/videos/bar-shift-10s-mobile.m4v.
+assets/videos/bar-shift.mov
+assets/videos/bar-shift-10s.mp4

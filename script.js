@@ -41,6 +41,22 @@ const workCategories = [
         buttonText: "見る",
         external: true,
       },
+      {
+        title: "相性診断",
+        description: "二人の関係がどこまでなのかを診断。今宵の関係はどうなるのか！",
+        tag: "Web / Tools",
+        url: "https://aisyou-shindan-8xb.pages.dev/",
+        buttonText: "見る",
+        external: true,
+      },
+      {
+        title: "bar & card collection",
+        description: "bar &の世界観をカードコレクションとして楽しめるWebコンテンツ。",
+        tag: "Web / Tools",
+        url: "https://bar--cardcollection.pages.dev/",
+        buttonText: "見る",
+        external: true,
+      },
     ],
   },
   {
@@ -121,55 +137,52 @@ const musicTracks = [
     duration: "3:08",
     description: "Akito Sakaiのトップソングとして表示されている1曲。",
     url: "https://music.apple.com/jp/song/blurred-lines/6763681060",
-    artwork:
-      "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f9/0d/c5/f90dc5da-f27f-caa2-f659-521f3eb24b4a/199999625476.png/600x600bb.jpg",
+    artwork: "assets/music/blurred-lines.jpg",
   },
   {
     title: "Fading Light",
     duration: "3:42",
     description: "少し切なさのあるタイトル。",
     url: "https://music.apple.com/jp/song/fading-light/6763681064",
-    artwork:
-      "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f9/0d/c5/f90dc5da-f27f-caa2-f659-521f3eb24b4a/199999625476.png/600x600bb.jpg",
+    artwork: "assets/music/blurred-lines.jpg",
   },
   {
     title: "Almost Mine",
     duration: "3:43",
     description: "2026年6月公開の楽曲。恋する人の心情を歌に。",
     url: "https://music.apple.com/jp/song/almost-mine/6776739467",
-    artwork:
-      "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/dc/01/35/dc01353b-a9b7-f086-a76b-57b8be62b2c1/199999667551.png/600x600bb.jpg",
+    artwork: "assets/music/almost-mine.jpg",
   },
   {
     title: "Over Drive",
     duration: "3:04",
     description: "テンションを上がるトラック。",
     url: "https://music.apple.com/jp/song/over-drive/6763681063",
-    artwork:
-      "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/f9/0d/c5/f90dc5da-f27f-caa2-f659-521f3eb24b4a/199999625476.png/600x600bb.jpg",
+    artwork: "assets/music/blurred-lines.jpg",
   },
 ];
 
 const createImages = [
-  { title: "Dragon", caption: "巨大な竜と崩壊する大地。", src: "assets/create/dragon.png" },
-  { title: "Demon", caption: "暗闇から手を伸ばす悪魔。", src: "assets/create/demon.png" },
-  { title: "Fantasy Rebirth", caption: "異世界に誘われる一人称視点。", src: "assets/create/fantasy-rebirth.png" },
-  { title: "Earth from Mars", caption: "火星の地表から地球を見上げるSFビジュアル。", src: "assets/create/earth-from-mars.png" },
-  { title: "Coral Reef", caption: "水中探索の視点で描いた鮮やかな珊瑚礁。", src: "assets/create/coral-reef.png" },
-  { title: "Battle", caption: "海辺で激突する2人のアニメ風バトルシーン。", src: "assets/create/battle.png" },
-  { title: "Amanohashidate Sunset", caption: "天橋立の夕焼けをアニメ映画のように描いた風景。", src: "assets/create/amanohashidate-sunset.png" },
-  { title: "Dinosaur World", caption: "古代恐竜がいた時代の風景。", src: "assets/create/ancient-adventure-in-the-dinosaur-world.png" },
-  { title: "Idol Stage View", caption: "選ばれしアイドルの景色。", src: "assets/create/idol-stage-view.png" },
-  { title: "Arashiyama", caption: "京都が誇る絶景。", src: "assets/create/Arashiyama.png" },
-  { title: "Sky", caption: "遥か上空から眺める小笠原諸島。", src: "assets/create/sky-diving.png" },
-  { title: "Pisa View", caption: "上から眺めたピサの斜塔。", src: "assets/create/view-from-the-leaning-tower-of-pisa.png" },
-  { title: "After Humanity", caption: "人間が絶滅した頃の金閣寺。", src: "assets/create/kinkakuji-after-humanity.png" },
-  { title: "Onomichi", caption: "絶景なる尾道。", src: "assets/create/onomichi-view.png" },
-  { title: "Lord of the Castle", caption: "与えられた城主の名。", src: "assets/create/lord-of-the-castle.png" },
-  { title: "Cats", caption: "猫に囲まれる幸せな日々。", src: "assets/create/world-surrounded-by-cats.png" },
+  { title: "Dragon", caption: "巨大な竜と崩壊する大地。", src: "assets/create-optimized/dragon.jpg" },
+  { title: "Demon", caption: "暗闇から手を伸ばす悪魔。", src: "assets/create-optimized/demon.jpg" },
+  { title: "Fantasy Rebirth", caption: "異世界に誘われる一人称視点。", src: "assets/create-optimized/fantasy-rebirth.jpg" },
+  { title: "Earth from Mars", caption: "火星の地表から地球を見上げるSFビジュアル。", src: "assets/create-optimized/earth-from-mars.jpg" },
+  { title: "Coral Reef", caption: "水中探索の視点で描いた鮮やかな珊瑚礁。", src: "assets/create-optimized/coral-reef.jpg" },
+  { title: "Battle", caption: "海辺で激突する2人のアニメ風バトルシーン。", src: "assets/create-optimized/battle.jpg" },
+  { title: "Amanohashidate Sunset", caption: "天橋立の夕焼けをアニメ映画のように描いた風景。", src: "assets/create-optimized/amanohashidate-sunset.jpg" },
+  { title: "Dinosaur World", caption: "古代恐竜がいた時代の風景。", src: "assets/create-optimized/ancient-adventure-in-the-dinosaur-world.jpg" },
+  { title: "Idol Stage View", caption: "選ばれしアイドルの景色。", src: "assets/create-optimized/idol-stage-view.jpg" },
+  { title: "Arashiyama", caption: "京都が誇る絶景。", src: "assets/create-optimized/Arashiyama.jpg" },
+  { title: "Sky", caption: "遥か上空から眺める小笠原諸島。", src: "assets/create-optimized/sky-diving.jpg" },
+  { title: "Pisa View", caption: "上から眺めたピサの斜塔。", src: "assets/create-optimized/view-from-the-leaning-tower-of-pisa.jpg" },
+  { title: "After Humanity", caption: "人間が絶滅した頃の金閣寺。", src: "assets/create-optimized/kinkakuji-after-humanity.jpg" },
+  { title: "Onomichi", caption: "絶景なる尾道。", src: "assets/create-optimized/onomichi-view.jpg" },
+  { title: "Lord of the Castle", caption: "与えられた城主の名。", src: "assets/create-optimized/lord-of-the-castle.jpg" },
+  { title: "Cats", caption: "猫に囲まれる幸せな日々。", src: "assets/create-optimized/world-surrounded-by-cats.jpg" },
 ];
 
 const workContainer = document.querySelector("#workContainer");
+const mobilePortfolioTabs = document.querySelector("#mobilePortfolioTabs");
 const createTrack = document.querySelector("#createTrack");
 const videoShowcase = document.querySelector("#videoShowcase");
 const mediaLinksContainer = document.querySelector("#mediaLinks");
@@ -200,6 +213,7 @@ const renderWork = () => {
     const block = document.createElement("section");
     block.className = "category-block";
     block.setAttribute("aria-label", category.category);
+    block.dataset.mobileTabSource = category.category;
 
     const cards = category.items.map((item, index) => createCard(item, index).outerHTML).join("");
     block.innerHTML = `
@@ -211,6 +225,123 @@ const renderWork = () => {
     `;
 
     workContainer.appendChild(block);
+  });
+};
+
+const createMusicTrackCard = (track, index) => {
+  const card = document.createElement("a");
+  card.className = "track-card";
+  card.href = track.url;
+  card.target = "_blank";
+  card.rel = "noopener noreferrer";
+  card.setAttribute("aria-label", `${track.title}をApple Musicで聴く`);
+  card.innerHTML = `
+    <span class="track-card__index">${String(index + 1).padStart(2, "0")}</span>
+    <span class="track-card__content">
+      <span class="tag">Music / Apple Music</span>
+      <h3>${track.title}</h3>
+      <p>${track.description}</p>
+    </span>
+    <span class="track-card__art" aria-hidden="true">
+      <img src="${track.artwork}" alt="" loading="eager" />
+    </span>
+    <span class="track-card__footer">
+      <span>${track.duration}</span>
+      <span>Listen</span>
+    </span>
+  `;
+  return card;
+};
+
+const renderMobilePortfolioTabs = () => {
+  if (!mobilePortfolioTabs) return;
+
+  const webTools = workCategories.find((category) => category.category === "Web / Tools");
+  const media = workCategories.find((category) => category.category === "Media");
+  const groups = [
+    {
+      id: "web-tools",
+      label: "Web / Tools",
+      description: webTools?.description || "",
+      contentClass: "card-grid",
+      content: webTools?.items.map((item, index) => createCard(item, index).outerHTML).join("") || "",
+    },
+    {
+      id: "media-projects",
+      label: "Media",
+      description: media?.description || "",
+      contentClass: "card-grid",
+      content: media?.items.map((item, index) => createCard(item, index).outerHTML).join("") || "",
+    },
+    {
+      id: "music-projects",
+      label: "Music",
+      description: "Apple Musicで配信している楽曲。",
+      contentClass: "track-list",
+      content: musicTracks.map((track, index) => createMusicTrackCard(track, index).outerHTML).join(""),
+    },
+  ];
+
+  const tabs = groups
+    .map(
+      (group, index) => `
+        <button
+          class="mobile-tab${index === 0 ? " is-active" : ""}"
+          type="button"
+          role="tab"
+          id="tab-${group.id}"
+          aria-selected="${index === 0 ? "true" : "false"}"
+          aria-controls="panel-${group.id}"
+          data-tab-target="${group.id}"
+        >
+          ${group.label}
+        </button>
+      `,
+    )
+    .join("");
+
+  const panels = groups
+    .map(
+      (group, index) => `
+        <section
+          class="mobile-tab-panel"
+          role="tabpanel"
+          id="panel-${group.id}"
+          aria-labelledby="tab-${group.id}"
+          ${index === 0 ? "" : "hidden"}
+        >
+          <div class="mobile-tab-heading">
+            <h3>${group.label}</h3>
+            <p>${group.description}</p>
+          </div>
+          <div class="${group.contentClass}">${group.content}</div>
+        </section>
+      `,
+    )
+    .join("");
+
+  mobilePortfolioTabs.innerHTML = `
+    <div class="mobile-tab-list" role="tablist" aria-label="作品カテゴリ">
+      ${tabs}
+    </div>
+    ${panels}
+  `;
+
+  const tabButtons = Array.from(mobilePortfolioTabs.querySelectorAll("[data-tab-target]"));
+  const tabPanels = Array.from(mobilePortfolioTabs.querySelectorAll(".mobile-tab-panel"));
+
+  tabButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const targetId = button.dataset.tabTarget;
+      tabButtons.forEach((tab) => {
+        const isActive = tab === button;
+        tab.classList.toggle("is-active", isActive);
+        tab.setAttribute("aria-selected", String(isActive));
+      });
+      tabPanels.forEach((panel) => {
+        panel.hidden = panel.id !== `panel-${targetId}`;
+      });
+    });
   });
 };
 
@@ -250,24 +381,7 @@ const renderVideoShowcase = () => {
 
 const renderMusicTracks = () => {
   musicTracks.forEach((track, index) => {
-    const card = document.createElement("a");
-    card.className = "track-card";
-    card.href = track.url;
-    card.target = "_blank";
-    card.rel = "noopener noreferrer";
-    card.setAttribute("aria-label", `${track.title}をApple Musicで聴く`);
-    card.innerHTML = `
-      <span class="track-card__index">${String(index + 1).padStart(2, "0")}</span>
-      <span class="track-card__content">
-        <span class="tag">Music / Apple Music</span>
-        <h3>${track.title}</h3>
-        <p>${track.description}</p>
-      </span>
-      <span class="track-card__footer">
-        <span>${track.duration}</span>
-        <span>Listen</span>
-      </span>
-    `;
+    const card = createMusicTrackCard(track, index);
     musicTracksContainer.appendChild(card);
   });
 };
@@ -303,10 +417,23 @@ const hydrateSocialShortcuts = () => {
   });
 };
 
+const syncMobileNavTargets = () => {
+  const isMobile = window.matchMedia("(max-width: 620px)").matches;
+  document.querySelectorAll("[data-mobile-target]").forEach((anchor) => {
+    if (!anchor.dataset.defaultTarget) {
+      anchor.dataset.defaultTarget = anchor.getAttribute("href");
+    }
+    anchor.setAttribute("href", isMobile ? anchor.dataset.mobileTarget : anchor.dataset.defaultTarget);
+  });
+};
+
 year.textContent = new Date().getFullYear();
 renderWork();
+renderMobilePortfolioTabs();
 renderVideoShowcase();
 renderCreateGallery();
 renderMusicTracks();
 renderMediaLinks();
 hydrateSocialShortcuts();
+syncMobileNavTargets();
+window.addEventListener("resize", syncMobileNavTargets);
