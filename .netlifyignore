@@ -7,6 +7,6 @@ bar-ai-poster/out/
 # assets/create-optimized/*.jpg for the gallery.
 assets/create/*.png
 
-# The site uses assets/videos/bar-shift-10s-mobile.m4v.
+# The site uses assets/videos/bar-shift-5s.mp4.
 assets/videos/bar-shift.mov
 assets/videos/bar-shift-10s.mp4

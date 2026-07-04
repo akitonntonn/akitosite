@@ -726,6 +726,7 @@ address {
   height: 100%;
   min-height: 240px;
   object-fit: cover;
+  object-position: center center;
 }
 
 .video-grid {
@@ -1284,8 +1285,12 @@ address {
 
   .work-video-feature__media,
   .work-video-feature__media video {
-    min-height: 152px;
-    max-height: 190px;
+    min-height: 220px;
+    max-height: 240px;
+  }
+
+  .work-video-feature__media video {
+    object-position: center 38%;
   }
 
   .category-stack {
