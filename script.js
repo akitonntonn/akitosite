@@ -58,6 +58,14 @@ const workCategories = [
         external: false,
       },
       {
+        title: "おすすめK-POP診断",
+        description: "K-POPを知らなくても答えられる10問で、この1年チャート上位に入った20組からあなたにぴったりのアーティストと最初の1曲がわかります。",
+        tag: "Web / Tools",
+        url: "/kpop-shindan/",
+        buttonText: "見る",
+        external: false,
+      },
+      {
         title: "bar & card collection",
         description: "bar &の世界観をカードコレクションとして楽しめるWebコンテンツ。",
         tag: "Web / Tools",

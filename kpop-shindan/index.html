@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>おすすめK-POP診断</title>
+<meta name="description" content="10問に答えるだけで、この1年チャート上位に入ったK-POPアーティスト20組から、あなたにぴったりの1組と最初に聴く1曲がわかります。K-POPを知らなくても楽しめます。">
+<meta property="og:title" content="おすすめK-POP診断">
+<meta property="og:description" content="10問であなたにぴったりのK-POPアーティストがわかる。合う理由と、最初に聴く1曲つき。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e9408f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='42' y='52' width='16' height='44' rx='6' fill='%231b1530'/%3E%3Ccircle cx='50' cy='34' r='28' fill='%23e9408f' stroke='%231b1530' stroke-width='6'/%3E%3Cpath d='M50 46l-11-11a7 7 0 0 1 11-9 7 7 0 0 1 11 9z' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap">
+<style>
+/* VOICE: 明るく親しみやすい。K-POPを知らない人にも「自分の好み」として答えられる
+   IDEA: ライブ会場のペンライトとチケット
+   PICTURE: ステージとペンライトの自作SVG、結果はアーティストごとのオリジナル配色の「ジャケット風」図形（写真・ロゴは使わない）
+   COLOUR and TYPE: 夜のステージの紫紺、ペンライトのピンク / Dela Gothic One + Zen Kaku Gothic New（NBA診断と共通）
+   LAYOUT: 1カラム、スマホ優先。開始→質問→結果カード→全アーティスト一覧 */
+:root{color-scheme:light dark;
+--bg:light-dark(#f4e6f4,#17122a);--bg2:light-dark(#e8d0ea,#251d40);--card:light-dark(#fffafd,#221a3a);
+--ink:light-dark(#1b1530,#f5ecfa);--mute:light-dark(#62557a,#bcaed0);--line:light-dark(#1b1530,#f5ecfa);
+--ball:#e9408f;--ballD:#b81e68}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "Zen Kaku Gothic New",system-ui,sans-serif;overflow-x:clip;
+background-image:radial-gradient(circle at 1px 1px,color-mix(in srgb,var(--ink) 16%,transparent) 1.2px,transparent 1.6px);background-size:22px 22px;min-height:100vh}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+h1,h2,.disp{font-family:"Dela Gothic One","Zen Kaku Gothic New",sans-serif;font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(32px,8vw,46px)}
+h2{font-size:clamp(24px,6vw,32px)}
+p{margin:.5em 0}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:22px;box-shadow:6px 6px 0 var(--line)}
+.hero svg{display:block;width:100%;height:auto;max-height:300px}
+.lead{font-size:17px}
+.mute{color:var(--mute);font-size:14px}
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:12px 24px;border-radius:999px;border:2px solid var(--line);background:var(--ball);color:#fff;font:900 17px "Zen Kaku Gothic New",sans-serif;cursor:pointer;box-shadow:3px 3px 0 var(--line);text-decoration:none}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line)}
+.btn.sub{background:var(--card);color:var(--ink)}
+.btn.sm{min-height:44px;padding:8px 18px;font-size:15px}
+.btn:focus-visible,.opt:focus-visible{outline:3px solid var(--ball);outline-offset:3px}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.bar{height:10px;border:2px solid var(--line);border-radius:99px;overflow:hidden;background:var(--card);margin:6px 0 18px}
+.bar i{display:block;height:100%;background:var(--ball);transition:width .3s}
+.qn{font-size:14px;font-weight:700;color:var(--mute)}
+.q{font-size:clamp(20px,5.2vw,25px);font-weight:900;line-height:1.4;margin:6px 0 16px}
+.opts{display:grid;gap:10px}
+.opt{appearance:none;text-align:left;width:100%;min-height:56px;padding:14px 16px;border:2px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);font:700 16px/1.5 "Zen Kaku Gothic New",sans-serif;cursor:pointer;display:flex;gap:12px;align-items:center}
+.opt b{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--bg2);font-size:14px}
+.opt:hover{background:color-mix(in srgb,var(--ball) 14%,var(--card))}
+.opt.on{background:var(--ball);color:#fff}
+.res-top{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;align-items:center}
+.res-top svg{width:120px;height:auto}
+.type{display:inline-block;background:var(--ink);color:var(--card);padding:2px 12px;border-radius:99px;font-weight:900;font-size:14px}
+.pname{font-size:clamp(26px,7vw,36px);margin:8px 0 2px;overflow-wrap:anywhere}
+.pname.long{font-size:clamp(19px,5vw,28px)}
+.en{font-size:14px;color:var(--mute);font-weight:700}
+.sec{margin-top:20px;padding-top:16px;border-top:2px dashed color-mix(in srgb,var(--line) 35%,transparent)}
+.sec h3{margin:0 0 6px;font-size:17px;font-weight:900}
+.tip{background:color-mix(in srgb,var(--ball) 14%,var(--card));border-radius:12px;padding:12px 14px}
+.song{display:flex;gap:12px;align-items:center;background:color-mix(in srgb,var(--ball) 14%,var(--card));border-radius:12px;padding:12px 14px}
+.song svg{flex:none;width:44px;height:44px}
+.song .st{font-weight:900;font-size:18px;line-height:1.3}
+.axes{display:grid;gap:10px;margin-top:8px}
+.ax{display:grid;grid-template-columns:5.5em minmax(0,1fr) 5.5em;gap:8px;align-items:center;font-size:13px;font-weight:700}
+.ax span:last-child{text-align:right}
+.track{position:relative;height:12px;border-radius:99px;background:var(--bg2)}
+.track i{position:absolute;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:var(--ball);border:2px solid var(--line)}
+.mini{display:flex;gap:10px;align-items:center;font-size:14px}
+.mini i{flex:none;width:14px;height:14px;border-radius:4px;border:1.5px solid var(--line)}
+.zk{margin-top:28px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chips button{appearance:none;min-height:40px;padding:6px 14px;border:2px solid var(--line);border-radius:99px;background:var(--card);color:var(--ink);font:700 14px "Zen Kaku Gothic New",sans-serif;cursor:pointer}
+.chips button.on{background:var(--ink);color:var(--card)}
+.chips button:focus-visible,.zc:focus-visible{outline:3px solid var(--ball);outline-offset:3px}
+.zlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:12px}
+.zc{appearance:none;display:grid;grid-template-columns:10px minmax(0,1fr);text-align:left;border:2px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);padding:0;overflow:hidden;cursor:pointer;font:inherit;box-shadow:3px 3px 0 var(--line)}
+.zc>i{display:block}
+.zc>div{padding:12px 14px}
+.zc .type{font-size:12px;padding:1px 10px}
+.zc .nm{font-weight:900;font-size:17px;margin:6px 0 0;line-height:1.3}
+.zc .tm{font-size:12px;color:var(--mute);font-weight:700}
+.zc .tr{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+.zc .tr span{font-size:12px;font-weight:700;padding:0 8px;border-radius:99px;background:var(--bg2)}
+.zc p{font-size:14px;margin:4px 0 0;line-height:1.55}
+.zc.me{outline:3px solid var(--ball);outline-offset:2px}
+.zc.me .nm::after{content:"　← あなた";color:var(--ball);font-size:13px}
+.toast{min-height:1.5em;font-size:14px;font-weight:700;color:var(--ballD)}
+.hide{display:none}
+.pop{animation:pop .45s ease-out}
+@keyframes pop{from{transform:translateY(12px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){.pop{animation:none}.bar i{transition:none}}
+@media(max-width:420px){.res-top{grid-template-columns:88px minmax(0,1fr)}.res-top svg{width:88px}.card{padding:18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<section id="start" class="pop">
+  <div class="hero" aria-hidden="true">
+    <svg viewBox="0 0 400 260">
+      <g fill="currentColor" opacity=".12">
+        <path d="M70 0l40 0 50 200h-150z"/><path d="M290 0h40l60 200h-150z"/><path d="M180 0h40l30 200h-100z"/>
+      </g>
+      <g fill="none" stroke="currentColor" stroke-width="4" opacity=".85">
+        <line x1="0" y1="206" x2="400" y2="206"/>
+        <path d="M40 206v-14h320v14"/>
+      </g>
+      <g stroke="#1b1530" stroke-width="4">
+        <g transform="translate(200 118) rotate(-8)">
+          <rect x="-11" y="20" width="22" height="80" rx="8" fill="#1b1530"/>
+          <circle r="50" fill="#e9408f"/>
+          <circle r="50" fill="none"/>
+          <path d="M0 22-20 2a12 12 0 0 1 20-16 12 12 0 0 1 20 16z" fill="#fff"/>
+          <ellipse cx="-18" cy="-26" rx="12" ry="6" fill="#fff" opacity=".4" stroke="none" transform="rotate(-30 -18 -26)"/>
+        </g>
+        <g transform="translate(92 150) rotate(-18)">
+          <rect x="-7" y="12" width="14" height="50" rx="5" fill="#1b1530"/>
+          <circle r="30" fill="#8a5cf6"/>
+          <path d="M0-14 4-4 14-4 6 3 9 13 0 7-9 13-6 3-14-4-4-4z" fill="#fff" stroke-width="2"/>
+        </g>
+        <g transform="translate(312 146) rotate(14)">
+          <rect x="-7" y="12" width="14" height="50" rx="5" fill="#1b1530"/>
+          <circle r="30" fill="#2fc4b2"/>
+          <circle r="11" fill="#fff" stroke-width="3"/>
+        </g>
+      </g>
+      <g font-family="Dela Gothic One" font-size="22" fill="currentColor">
+        <text x="24" y="44">♪</text><text x="352" y="62">♪</text><text x="330" y="30" font-size="15">20</text>
+      </g>
+    </svg>
+  </div>
+  <div class="card">
+    <h1>あなたに<br>ぴったりのK-POPは？</h1>
+    <p class="lead">好きな音楽や過ごし方についての10問に答えると、この1年チャート上位に入ったアーティスト20組から、あなたにぴったりの1組がわかります。</p>
+    <p class="mute">K-POPを知らなくても大丈夫です。合う理由と、最初に聴くならこの1曲、までお届けします。所要時間は約2分です。</p>
+    <div class="row"><button class="btn" id="go">診断をはじめる</button></div>
+  </div>
+</section>
+
+<section id="quiz" class="hide">
+  <div class="card">
+    <div class="qn" id="qn"></div>
+    <div class="bar"><i id="prog" style="width:0"></i></div>
+    <div class="q" id="qt"></div>
+    <div class="opts" id="opts"></div>
+    <div class="row"><button class="btn sub" id="back">← ひとつ戻る</button></div>
+  </div>
+</section>
+
+<section id="result" class="hide">
+  <div class="card pop" id="rcard"></div>
+  <div class="card" style="margin-top:20px">
+    <h3 style="margin:0 0 4px;font-size:17px">結果をシェアする</h3>
+    <p class="mute">結果とこの診断のリンクをまとめて送れます。</p>
+    <div class="row">
+      <button class="btn" id="copy">結果の文章をコピー</button>
+      <a class="btn sub" id="xshare" href="#" target="_blank" rel="noopener">Xでポスト</a>
+      <a class="btn sub" id="lshare" href="#" target="_blank" rel="noopener">LINEで送る</a>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+  </div>
+  <div class="card" style="margin-top:20px">
+    <div class="row" style="margin-top:0"><button class="btn" id="again">もう一度診断する</button><a class="btn sub" href="#zukan" id="tozk">20組のアーティスト一覧</a></div>
+  </div>
+</section>
+
+<section id="zukan" class="zk">
+  <h2>20組のアーティスト一覧</h2>
+  <p class="mute">診断に登場する全アーティストです。気になる雰囲気で絞り込めます。カードをタップすると、合う人の特徴とおすすめの1曲が見られます。</p>
+  <div class="chips" id="chips"></div>
+  <div class="zlist" id="all"></div>
+  <p class="mute" style="margin-top:18px">対象は、韓国の公式音楽チャート「Circle Chart（サークルチャート）」の週間デジタルチャートで、2025年12月〜2026年11月にトップ10入り（＝トップ50入り）した曲を持つアーティストから選んでいます。アニメ作品の架空グループや、K-POP以外の海外アーティストは除いています。このページは各アーティスト・事務所とは関係のない非公式のファン作品で、写真・ロゴ・歌詞・音源は使っていません。曲は外部のYouTube・Spotifyの検索結果で聴けます。</p>
+</section>
+
+</div>
+<script>
+{
+// DATA-START
+// 軸: 0 明るい(+)/切ない(-), 1 クール(+)/ふんわり(-), 2 ダンス(+)/歌声(-), 3 新星(+)/定番(-), 4 世界観(+)/等身大(-)
+const AX=[["切ない","明るい"],["ふんわり","クール"],["歌声","ダンス"],["定番","新星"],["等身大","世界観"]];
+const Q=[
+ ["気分を上げたい朝。イヤホンで流すなら？",[["キラキラした明るいポップ",[2,-1,0,0,0]],["ビートが強くてかっこいい曲",[0,2,1,0,0]],["しっとり心にしみるバラード",[-2,0,-2,0,0]],["物語が浮かぶ、ちょっと不思議な曲",[0,0,0,0,2]]]],
+ ["動画を見るなら、どれが一番気になる？",[["大人数でぴったりそろったダンス",[0,0,2,0,1]],["生歌でじっくり聴かせるライブ",[0,0,-2,-1,0]],["メンバー同士のわちゃわちゃした日常",[1,-1,0,0,-2]],["映画みたいな映像の作品",[0,1,0,0,2]]]],
+ ["応援したくなるのは、どんな人？",[["デビューしたての、これからの新人",[0,0,0,2,0]],["何年も第一線にいる大先輩",[0,0,0,-2,0]],["自分で曲を作って歌う人",[0,0,-2,0,1]],["自分の魅力に自信を持っている人",[1,1,0,0,0]]]],
+ ["好きな映画やドラマのジャンルは？",[["SFやファンタジー",[0,1,0,1,2]],["青春・学園もの",[2,-1,0,1,-1]],["切ない恋愛もの",[-2,0,-1,0,0]],["スカッとするアクション",[0,2,1,0,0]]]],
+ ["カラオケでのあなたは？",[["みんなで盛り上がる曲を入れる",[2,0,1,0,-1]],["歌唱力が試される曲をしっとり歌う",[-1,0,-2,0,0]],["振り付きで踊りながら歌う",[0,0,2,0,0]],["懐かしい名曲をしみじみ歌う",[0,0,0,-2,0]]]],
+ ["理想の休日の過ごし方は？",[["友達とカフェ巡り",[1,-1,0,0,-2]],["一人で音楽にどっぷり浸る",[-2,0,-1,0,0]],["話題の新しいスポットへ行く",[0,0,0,2,0]],["ライブやイベントで思いきり盛り上がる",[0,1,2,0,1]]]],
+ ["一番好きな季節は？",[["ふんわり暖かい春",[1,-2,0,1,0]],["元気が出る夏",[2,1,1,0,0]],["少しさみしい秋",[-1,0,-1,0,1]],["空気が澄んだ冬",[-2,0,-1,-1,0]]]],
+ ["言われて一番うれしいほめ言葉は？",[["「かっこいい！」",[0,2,0,0,0]],["「かわいい！」",[1,-2,0,0,0]],["「センスいいね」",[0,0,0,1,2]],["「一緒にいると落ち着く」",[-1,-1,-1,-1,-2]]]],
+ ["歌詞で一番ひびくのは？",[["「自分を信じて進め」というメッセージ",[1,1,0,0,0]],["恋のときめき",[1,-1,0,0,-1]],["別れや切なさ",[-2,0,-1,0,0]],["不思議な世界の物語",[0,0,0,0,2]]]],
+ ["新しく音楽を聴くなら、どこから入りたい？",[["今いちばん話題の最新曲",[0,0,0,2,0]],["何年たっても愛される名曲",[0,0,0,-2,0]],["ダンスが話題になった曲",[0,0,2,0,0]],["声が好きになれる曲",[0,0,-2,0,0]]]]
+];
+// [英名, カナ, ひとこと紹介, 色1, 色2, タイプ名, 特徴ベクトル, どんなアーティストか, あなたに合う理由, 最初の1曲, 1曲の聴きどころ]
+const P=[
+ ["BTS","ビーティーエス","7人組ボーイズグループ・2013年デビュー","#6b4fd8","#f2c14e","世界を動かす王道",[-1,2,-1,-1,2],"世界中のチャートで記録を作ってきた、K-POPを代表するグループです。自分たちの悩みや成長をそのまま歌詞にしてきたので、曲を追うほど7人の物語が見えてきます。メンバー全員の兵役を終え、2026年に7人そろってカムバックしました。","はやりより「長く信頼できるもの」を選び、そのうえで中身の深さも楽しみたいあなたに。入り口は王道でも、聴き込むほど新しい発見があるグループです。","SWIM","2026年のカムバック曲で、Circle Chartの週間1位を獲得。7人の今の声がまとめて聴けます。"],
+ ["IVE","アイヴ","6人組ガールズグループ・2021年デビュー","#d8324f","#fff1f4","自信をくれるヒロイン",[1,2,2,-1,0],"「自分を愛すること」をまっすぐ歌う、華やかなグループです。堂々としたステージと覚えやすいサビで、デビュー直後から韓国のチャート上位の常連になりました。","明るく前向きで、自分の魅力にも自信を持ちたいあなたに。聴くだけで背筋が伸びて、ちょっと強気になれる曲がそろっています。","BANG BANG","2026年2月にCircle Chartの週間2位まで上がったヒット曲。IVEらしい自信たっぷりの雰囲気がわかります。"],
+ ["aespa","エスパ","4人組ガールズグループ・2020年デビュー","#3a3f58","#9fe7ff","近未来のクールな戦士",[0,2,1,0,2],"仮想世界とつながる独自の世界観と、強いビートの攻めたサウンドで知られるグループです。ミュージックビデオも近未来の映画のような作り込みで、見るたびに新しい設定が見えてきます。","かっこいいものが好きで、SFや独自の世界観にワクワクするあなたに。ただの曲ではなく「ひとつの作品世界」として楽しめます。","LEMONADE","2026年6月のCircle Chart月間3位。今のaespaを知るならまずこの曲です。"],
+ ["ILLIT","アイリット","5人組ガールズグループ・2024年デビュー","#ffb3cf","#7a8cff","ふわっと可愛い新世代",[1,-1,1,2,1],"デビュー曲「Magnetic」が世界的なヒットになった新世代のグループです。肩の力が抜けた、ゆるくて可愛い雰囲気と、真似したくなる振り付けが人気です。","やわらかい雰囲気や「かわいい」が好きで、気軽に楽しめる曲を探しているあなたに。聴いた日はちょっと気分が軽くなります。","It's Me","2026年春〜夏にCircle Chartのトップ10に入り続けた曲。ILLITのふんわりした魅力が詰まっています。"],
+ ["Hearts2Hearts","ハーツトゥハーツ","8人組ガールズグループ・2025年デビュー","#ff6f91","#ffe066","まっすぐ走る新星",[1,0,0,2,1],"2025年にデビューした8人組。デビュー2年目で韓国のチャート1位を何週も取り、一気に注目の的になりました。元気で真っすぐなエネルギーが持ち味です。","新しいものを一番に見つけたい、そして成長していく姿を応援したいあなたに。今から追えば「最初から知ってた」と言えるグループです。","RUDE!","2026年3月のCircle Chart月間1位。思わず体が動く、明るくはじけた1曲です。"],
+ ["KiiiKiii","キキ","5人組ガールズグループ・2025年デビュー","#9be15d","#ff8ad8","自由体のZ世代",[2,-1,0,2,-2],"「自分らしくいること」を大事にする、自然体のガールズグループです。決めすぎない等身大のファッションや言葉が、同世代から強く支持されています。","かっこつけすぎず、友達みたいな距離感のアーティストが好きなあなたに。普段の気分に寄り添ってくれる新しい音楽です。","404 (New Era)","2026年2月〜3月にCircle Chartの週間1位を4週連続で獲得した曲です。"],
+ ["CORTIS","コルティス","5人組ボーイズグループ・2025年デビュー","#d7261e","#111111","自分で作るクリエイター集団",[1,2,1,2,0],"曲づくりや振り付け、映像まで自分たちで手がける「クリエイタークルー」として登場したグループです。肩ひじ張らないストリートな雰囲気とダンスが魅力です。","流行を追うより自分たちで作り出す人に惹かれる、行動派のあなたに。一緒に新しいことを始めたくなるエネルギーがあります。","REDRED","2026年5月〜7月にCircle Chartの週間1位を何度も取った、彼らの代表的なヒット曲です。"],
+ ["RESCENE","リセンヌ","5人組ガールズグループ・2024年デビュー","#f4a7b9","#b9e4d0","やさしい余韻のストーリーテラー",[0,-1,-1,2,2],"「香り」や「記憶」をモチーフにした、やわらかい世界観のグループです。派手さより、ふわりと残る余韻で少しずつファンを増やしてきました。","ふんわりした雰囲気が好きで、聴いたあとに情景が浮かぶ曲を求めるあなたに。何度も聴くほど好きになるタイプです。","LOVE ATTACK","2026年7月〜8月にCircle Chartの週間1位を6週連続で獲得。グループの名前を一気に広めた曲です。"],
+ ["NMIXX","エンミックス","6人組ガールズグループ・2022年デビュー","#2b6fd6","#ffd23f","歌って踊れる実力派",[-1,1,-1,0,2],"1曲の中でジャンルががらりと切り替わる独自の「MIXX POP」と、ライブでも揺るがない歌唱力で知られるグループです。","意外な展開や、ほかとちょっと違うものにワクワクするあなたに。歌もダンスも本格派なので、「うまい」を味わいたい人にも合います。","Blue Valentine","2025年11月にCircle Chartの週間1位を獲得。年をまたいでトップ10に残ったヒット曲です。"],
+ ["Hwasa","ファサ","ソロ歌手（MAMAMOOのメンバー）","#8b1e3f","#f0b37e","大人の余韻をまとう歌声",[-1,1,0,-2,0],"グループMAMAMOOのメンバーで、ソロでも活躍する歌手です。深みのある声と、自分の体や生き方を堂々と肯定する姿勢が多くの人を惹きつけています。","落ち着いた大人っぽい音楽が好きで、歌声そのものに浸りたいあなたに。強さと切なさが同時にある声です。","Good Goodbye","2025年末〜2026年1月にCircle Chartの週間1位を長く続けた、別れを歌う1曲です。"],
+ ["AKMU","アクドンミュージシャン","兄妹デュオ・2014年デビュー","#46a35e","#fff4c2","日常を歌う兄妹デュオ",[-1,-2,-2,-1,1],"兄のイ・チャンヒョクが作詞作曲を手がけ、妹のイ・スヒョンが澄んだ声で歌う兄妹デュオです。日常の小さな気持ちをすくい取る歌詞と、やさしいメロディが長く愛されています。","にぎやかさより、言葉やメロディをじっくり味わいたいあなたに。K-POPのイメージが変わるかもしれません。","Paradise of Rumors","2026年5月のCircle Chart月間1位。AKMUらしい物語のある歌詞が光る曲です。"],
+ ["WOODZ","ウッズ","ソロ歌手・シンガーソングライター","#2d5e7e","#ffb547","熱くて切ないロックの人",[-2,1,-2,0,0],"自分で曲を書き、バンドサウンドで歌うシンガーソングライターです。数年前に出した曲が口コミで広がり、あとからチャートを駆け上がる「逆走ヒット」を起こしました。","エモーショナルな音楽が好きで、ロックやバンドの音にも惹かれるあなたに。熱さと切なさのバランスがクセになります。","Drowning","発表から時間をおいて大ヒットし、2025年末〜2026年春までCircle Chartのトップ10に残り続けた曲です。"],
+ ["fromis_9","プロミスナイン","ガールズグループ・2018年デビュー","#ff9e7a","#7fd1c7","そばにいる親友みたいなグループ",[1,-2,0,-1,-1],"明るく親しみやすい雰囲気と、メンバー同士の仲の良さで愛されるグループです。デビューから長く活動しながらも、変わらない「近さ」が魅力です。","友達とのおしゃべりのように、気軽に楽しめる音楽が好きなあなたに。疲れた日にも重くならずに聴けます。","White Memories","2025年末にCircle Chartの週間2位まで上がった曲です。"],
+ ["ALLDAY PROJECT","オールデイ・プロジェクト","男女混成5人組・2025年デビュー","#111111","#c7ff3d","型破りな男女混成チーム",[0,2,1,1,2],"男女混成という、K-POPでは珍しい形でデビューしたグループです。ヒップホップ寄りの強いサウンドと、高いダンスの実力でデビュー直後から話題になりました。","「よくある感じ」では物足りない、強めでとがった音楽を探すあなたに。最初の1曲で好き嫌いがはっきり分かれるタイプです。","ONE MORE TIME","2025年末〜2026年初めにCircle Chartのトップ10入りした曲です。"],
+ ["I.O.I","アイオーアイ","ガールズグループ・2016年結成","#ff5fa2","#ffd6e8","懐かしさと再会のきらめき",[2,-1,1,-2,1],"オーディション番組「PRODUCE 101」から生まれ、短い活動期間で社会現象になったグループです。2026年、ファンが待ち続けた再集結が実現しました。","思い出や「再会」に弱い、仲間との時間を大切にするあなたに。明るさの中に少しの懐かしさがある曲です。","Suddenly","2026年6月のCircle Chart月間1位。再集結の喜びが伝わる1曲です。"],
+ ["EXO","エクソ","ボーイズグループ・2012年デビュー","#9aa7b8","#eaf2ff","冬を彩る伝説のハーモニー",[-2,0,-2,-1,2],"2010年代のK-POPを代表するボーイズグループです。美しいハーモニーで知られ、特に冬の曲は毎年この季節になるとチャートに戻ってくるほど愛されています。","寒い季節や切ないバラードが好きで、長く聴ける名曲を探しているあなたに。今の季節にこそ聴いてほしいグループです。","The First Snow","2013年の冬の名曲。2025年12月にもCircle Chartの週間2位に返り咲きました。"],
+ ["YENA","イェナ","ソロ歌手（元IZ*ONE）","#ffcf33","#ff5f8f","元気をくれるビタミン",[2,-1,0,0,-2],"グループIZ*ONEのメンバーとして活躍したあと、ソロでデビューしました。明るくてちょっとコミカルなキャラクターと、はじけるポップな曲で人を元気にします。","落ち込んだときに笑顔になれる曲がほしい、にぎやかなものが好きなあなたに。聴くと一日のテンションが上がります。","CATCH CATCH","2026年春〜夏にCircle Chartのトップ10入りした、YENAらしい弾けた1曲です。"],
+ ["Davichi","ダビチ","女性ボーカルデュオ・2008年デビュー","#6e5a9e","#e9dcff","心に寄り添うバラードの名手",[-2,-1,-2,0,-1],"2人の歌声だけで勝負する、韓国を代表するバラードデュオです。15年以上にわたって、失恋や別れの気持ちに寄り添う名曲を出し続けています。","派手さより、歌の上手さと気持ちのこもった歌詞に心を動かされるあなたに。K-POPの「歌もの」の奥深さに出会えます。","Time Capsule","2025年末〜2026年初めにCircle Chartのトップ10に入り続けた曲です。"],
+ ["HANRORO","ハンロロ","ソロ歌手・シンガーソングライター","#f08a5d","#3c6e71","若い心を描くシンガーソングライター",[-1,0,-1,2,1],"自分で曲を書いて歌うシンガーソングライターです。若い世代の不安やときめきを素直に描いた曲が共感を呼び、長くチャート上位に残り続けました。","アイドルより「歌う人の言葉」に惹かれる、自分の気持ちを大事にするあなたに。何気ない日に聴きたくなる音楽です。","Landing in Love","2025年末から2026年夏まで、Circle Chartのトップ10に何度も登場したロングヒット曲です。"],
+ ["Soyeon","ソヨン","ソロ歌手（i-dleのリーダー）","#1f1f1f","#ff3b3b","自分の言葉で勝負するプロデューサー",[1,2,-1,-1,-1],"グループi-dleのリーダーで、グループの曲の多くを自ら作るプロデューサーでもあります。率直で強気な歌詞と、ジャンルにとらわれない曲づくりが持ち味です。","はっきり意見を言える人や、自分で道を切り開く人がかっこいいと思うあなたに。聴くと「自分も言っていいんだ」と思えます。","I'm gonna TOESA","2026年10月にCircle Chartの週間2位まで上がった、ソロとしての最新ヒット曲です。"]
+];
+// DATA-END
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const slug=p=>p[0].toLowerCase().replace(/[^a-z0-9]/g,"");
+let ans=[],cur=0,me=null;
+const show=id=>{for(const s of ["start","quiz","result"])$(s).classList.toggle("hide",s!==id);$("zukan").classList.toggle("hide",id==="quiz");renderZ();window.scrollTo(0,0)};
+const renderQ=()=>{
+  const [t,os]=Q[cur];
+  $("qn").textContent=`質問 ${cur+1} / ${Q.length}`;
+  $("prog").style.width=(cur/Q.length*100)+"%";
+  $("qt").textContent=t;
+  $("opts").innerHTML=os.map((o,i)=>`<button class="opt${ans[cur]===i?" on":""}" data-i="${i}"><b>${"ABCD"[i]}</b><span>${esc(o[0])}</span></button>`).join("");
+  $("back").style.visibility=cur?"visible":"hidden";
+};
+const TOT=[0,1,2,3,4].map(k=>Q.reduce((t,q)=>t+Math.max(...q[1].map(o=>Math.abs(o[1][k]))),0));
+const score=a=>{const v=[0,0,0,0,0];a.forEach((ai,i)=>Q[i][1][ai][1].forEach((x,k)=>v[k]+=x));
+  return v.map((x,k)=>Math.max(-2,Math.min(2,x/TOT[k]*2*1.8)))};
+const cos=(a,b)=>{let d=0,na=0,nb=0;for(let k=0;k<5;k++){d+=a[k]*b[k];na+=a[k]*a[k];nb+=b[k]*b[k]}return d/Math.sqrt(na*nb||1)};
+const match=v=>{let b=0,bd=-9;P.forEach((p,i)=>{const d=cos(p[6],v);if(d>bd){bd=d;b=i}});return b};
+// オリジナルの「ジャケット風」図形（アーティストの写真・ロゴではありません）
+const cover=p=>{const ini=p[0].replace(/[^A-Za-z0-9]/g,"").slice(0,2).toUpperCase();
+  return `<svg viewBox="0 0 120 120" aria-hidden="true"><rect x="10" y="14" width="96" height="96" rx="8" fill="#1b1530" opacity=".2"/>
+  <rect x="4" y="6" width="96" height="96" rx="8" fill="${p[3]}" stroke="#1b1530" stroke-width="3"/>
+  <circle cx="74" cy="34" r="20" fill="${p[4]}" opacity=".9"/>
+  <path d="M4 78c24-14 48 10 96-6v22a8 8 0 0 1-8 8H12a8 8 0 0 1-8-8z" fill="${p[4]}" opacity=".55"/>
+  <text x="14" y="62" font-family="Dela Gothic One" font-size="30" fill="#fff" stroke="#1b1530" stroke-width="1.2">${esc(ini)}</text></svg>`};
+const note=`<svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="20" fill="#e9408f" stroke="#1b1530" stroke-width="2.5"/><path d="M18 30V14l12-3v15" fill="none" stroke="#fff" stroke-width="3"/><circle cx="15.5" cy="30" r="3.5" fill="#fff"/><circle cx="27.5" cy="26" r="3.5" fill="#fff"/></svg>`;
+const renderR=(i,v)=>{
+  const p=P[i];me=i;
+  const axes=(v||p[6]);
+  const qs=encodeURIComponent(p[0]+" "+p[9]);
+  $("rcard").innerHTML=`<div class="res-top">${cover(p)}<div><span class="type">${esc(p[5])}</span>
+   <div class="pname disp${p[0].length>9?" long":""}">${esc(p[0])}</div><div class="en">${esc(p[1])}</div>
+   <div class="mini" style="margin-top:6px"><i style="background:${p[3]}"></i>${esc(p[2])}</div></div></div>
+   <div class="sec"><h3>${v?"あなたにおすすめなのは、このアーティスト":"どんなアーティスト？"}</h3><p>${esc(p[7])}</p></div>
+   <div class="sec"><h3>${v?"あなたに合う理由":"こんな人におすすめ"}</h3><p class="tip">${esc(p[8])}</p></div>
+   <div class="sec"><h3>最初に聴くならこの1曲</h3><div class="song">${note}<div><div class="st">${esc(p[9])}</div><div class="mute" style="margin:2px 0 0">${esc(p[10])}</div></div></div>
+    <div class="row"><a class="btn sm" href="https://www.youtube.com/results?search_query=${qs}" target="_blank" rel="noopener">YouTubeで探す</a><a class="btn sub sm" href="https://open.spotify.com/search/${qs}" target="_blank" rel="noopener">Spotifyで探す</a></div></div>
+   <div class="sec"><h3>${v?"あなたの音楽の好み":"このアーティストの雰囲気"}</h3><div class="axes">${AX.map((a,k)=>`<div class="ax"><span>${a[0]}</span><div class="track"><i style="left:${(axes[k]+2)/4*100}%"></i></div><span>${a[1]}</span></div>`).join("")}</div></div>`;
+  $("rcard").classList.remove("pop");void $("rcard").offsetWidth;$("rcard").classList.add("pop");
+  const url=location.origin+location.pathname;
+  const txt=`おすすめK-POP診断の結果、私にぴったりなのは「${p[5]}」${p[0]}でした！\n最初の1曲：${p[9]}\n#おすすめKPOP診断`;
+  $("xshare").href="https://twitter.com/intent/tweet?text="+encodeURIComponent(txt)+"&url="+encodeURIComponent(url);
+  $("lshare").href="https://social-plugins.line.me/lineit/share?text="+encodeURIComponent(txt)+"&url="+encodeURIComponent(url);
+  $("copy").dataset.t=txt+"\n"+url;$("toast").textContent="";
+  try{history.replaceState(null,"","#"+slug(p))}catch(e){}
+  show("result");
+};
+const trait=p=>p[6].map((x,k)=>[x,k]).filter(a=>a[0]).sort((a,b)=>Math.abs(b[0])-Math.abs(a[0])).slice(0,3).map(a=>AX[a[1]][a[0]>0?1:0]);
+let filt=null,resultMine=false;
+function renderZ(){$("chips").innerHTML=[null,...AX.flat()].map(t=>`<button class="${t===filt?"on":""}" data-t="${t||""}">${t?esc(t)+"系":"すべて"}</button>`).join("");
+  const L=P.map((p,i)=>[p,i,trait(p)]).filter(x=>!filt||x[2].includes(filt));
+  $("all").innerHTML=L.map(([p,i,tr])=>`<button class="zc${i===me&&resultMine?" me":""}" data-i="${i}"><i style="background:linear-gradient(${p[3]} 65%,${p[4]} 65%)"></i><div><span class="type">${esc(p[5])}</span><div class="nm">${esc(p[0])}</div><div class="tm">${esc(p[1])}・${esc(p[2])}</div><div class="tr">${tr.map(t=>`<span>${esc(t)}</span>`).join("")}</div><p>最初の1曲：${esc(p[9])}</p></div></button>`).join("")||'<p class="mute">該当するアーティストがいません。</p>'}
+$("chips").onclick=e=>{const b=e.target.closest("button");if(!b)return;filt=b.dataset.t||null;renderZ()};
+renderZ();
+$("go").onclick=()=>{ans=[];cur=0;renderQ();show("quiz")};
+$("again").onclick=()=>{try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}ans=[];cur=0;renderQ();show("quiz")};
+$("opts").onclick=e=>{const b=e.target.closest(".opt");if(!b)return;ans[cur]=+b.dataset.i;
+  if(cur<Q.length-1){cur++;renderQ()}else{const v=score(ans);try{localStorage.setItem("kpopq",JSON.stringify(ans))}catch(e){}resultMine=true;renderR(match(v),v)}};
+$("back").onclick=()=>{if(cur>0){cur--;renderQ()}};
+$("all").onclick=e=>{const b=e.target.closest(".zc");if(b){resultMine=false;renderR(+b.dataset.i,null)}};
+$("tozk").onclick=e=>{e.preventDefault();$("zukan").scrollIntoView({behavior:"smooth"})};
+$("copy").onclick=async()=>{try{await navigator.clipboard.writeText($("copy").dataset.t);$("toast").textContent="コピーしました。SNSやメッセージに貼り付けてください。"}catch(e){$("toast").textContent="コピーできませんでした。下の文章を長押しでコピーしてください：\n"+$("copy").dataset.t}};
+const fromHash=()=>{const h=location.hash.slice(1);const i=P.findIndex(p=>slug(p)===h);if(i>=0)renderR(i,null)};
+window.addEventListener("hashchange",fromHash);fromHash();
+}
+</script>
+</body>
+</html>
