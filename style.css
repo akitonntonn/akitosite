@@ -518,16 +518,6 @@ h1 small {
   transform: rotate(5deg);
 }
 
-.game-portal__visual svg {
-  display: block;
-  width: 100%;
-  filter: drop-shadow(5px 5px 0 var(--ink));
-}
-
-.quiz-portal .game-portal__visual {
-  width: clamp(64px, 11vw, 120px);
-}
-
 .game-portal__visual img {
   display: block;
   width: 100%;

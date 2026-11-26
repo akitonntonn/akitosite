@@ -50,6 +50,14 @@ const workCategories = [
         external: true,
       },
       {
+        title: "NBA選手タイプ診断",
+        description: "バスケを知らなくても答えられる10問で、NBA30チームのスター選手からあなたに似た1人がわかります。",
+        tag: "Web / Tools",
+        url: "/nba-shindan/",
+        buttonText: "見る",
+        external: false,
+      },
+      {
         title: "bar & card collection",
         description: "bar &の世界観をカードコレクションとして楽しめるWebコンテンツ。",
         tag: "Web / Tools",
