@@ -59,7 +59,7 @@ const workCategories = [
       },
       {
         title: "おすすめK-POP診断",
-        description: "K-POPを知らなくても答えられる10問で、この1年チャート上位に入った20組からあなたにぴったりのアーティストと最初の1曲がわかります。",
+        description: "K-POPを知らなくても答えられる10問で、この1年チャート上位に入った50組からあなたにぴったりのアーティストと最初の1曲がわかります。",
         tag: "Web / Tools",
         url: "/kpop-shindan/",
         buttonText: "見る",
