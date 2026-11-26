@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NBA選手タイプ診断</title>
+<meta name="description" content="10問の性格診断で、NBA30チームのスター選手からあなたに似た1人がわかります。バスケを知らなくても楽しめます。">
+<meta property="og:title" content="NBA選手タイプ診断">
+<meta property="og:description" content="10問であなたに似たNBAスターがわかる。強みと、仕事や勉強に活かすヒントつき。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#f26b1d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23f26b1d' stroke='%2322170f' stroke-width='6'/%3E%3Cpath d='M4 50h92M50 4v92M20 20c14 16 14 44 0 60M80 20c-14 16-14 44 0 60' fill='none' stroke='%2322170f' stroke-width='6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap">
+<style>
+/* VOICE: 明るく親しみやすい。バスケを知らない人にも「自分のこと」として読める
+   IDEA: 体育館の床（ハードウッド）とスカウトカード
+   PICTURE: コートのセンターサークルとボールの自作SVG、結果はチームカラーのオリジナルユニフォーム図
+   COLOUR and TYPE: 木目の床色、墨色のライン、ボールのオレンジ / Dela Gothic One + Zen Kaku Gothic New
+   LAYOUT: 1カラム、スマホ優先。開始→質問→結果カード */
+:root{color-scheme:light dark;
+--bg:light-dark(#f1d7ad,#1d140d);--bg2:light-dark(#e7c48f,#2a1d13);--card:light-dark(#fffaf1,#2e2217);
+--ink:light-dark(#22170f,#f6ead8);--mute:light-dark(#6b5643,#c2ad94);--line:light-dark(#22170f,#f6ead8);
+--ball:#f26b1d;--ballD:#b9480c}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "Zen Kaku Gothic New",system-ui,sans-serif;overflow-x:clip;
+background-image:repeating-linear-gradient(90deg,transparent 0 46px,color-mix(in srgb,var(--bg2) 70%,transparent) 46px 48px);min-height:100vh}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 48px}
+h1,h2,.disp{font-family:"Dela Gothic One","Zen Kaku Gothic New",sans-serif;font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(32px,8vw,46px)}
+h2{font-size:clamp(24px,6vw,32px)}
+p{margin:.5em 0}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:22px;box-shadow:6px 6px 0 var(--line)}
+.hero svg{display:block;width:100%;height:auto;max-height:300px}
+.lead{font-size:17px}
+.mute{color:var(--mute);font-size:14px}
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:12px 24px;border-radius:999px;border:2px solid var(--line);background:var(--ball);color:#fff;font:900 17px "Zen Kaku Gothic New",sans-serif;cursor:pointer;box-shadow:3px 3px 0 var(--line);text-decoration:none}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line)}
+.btn.sub{background:var(--card);color:var(--ink)}
+.btn:focus-visible,.opt:focus-visible{outline:3px solid var(--ball);outline-offset:3px}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.bar{height:10px;border:2px solid var(--line);border-radius:99px;overflow:hidden;background:var(--card);margin:6px 0 18px}
+.bar i{display:block;height:100%;background:var(--ball);transition:width .3s}
+.qn{font-size:14px;font-weight:700;color:var(--mute)}
+.q{font-size:clamp(20px,5.2vw,25px);font-weight:900;line-height:1.4;margin:6px 0 16px}
+.opts{display:grid;gap:10px}
+.opt{appearance:none;text-align:left;width:100%;min-height:56px;padding:14px 16px;border:2px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);font:700 16px/1.5 "Zen Kaku Gothic New",sans-serif;cursor:pointer;display:flex;gap:12px;align-items:center}
+.opt b{flex:none;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--bg2);font-size:14px}
+.opt:hover{background:color-mix(in srgb,var(--ball) 14%,var(--card))}
+.opt.on{background:var(--ball);color:#fff}
+.res-top{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;align-items:center}
+.res-top svg{width:120px;height:auto}
+.type{display:inline-block;background:var(--ink);color:var(--card);padding:2px 12px;border-radius:99px;font-weight:900;font-size:14px}
+.pname{font-size:clamp(26px,7vw,36px);margin:8px 0 2px}
+.en{font-size:14px;color:var(--mute);font-weight:700}
+.sec{margin-top:20px;padding-top:16px;border-top:2px dashed color-mix(in srgb,var(--line) 35%,transparent)}
+.sec h3{margin:0 0 6px;font-size:17px;font-weight:900}
+.tip{background:color-mix(in srgb,var(--ball) 14%,var(--card));border-radius:12px;padding:12px 14px}
+.axes{display:grid;gap:10px;margin-top:8px}
+.ax{display:grid;grid-template-columns:5.5em minmax(0,1fr) 5.5em;gap:8px;align-items:center;font-size:13px;font-weight:700}
+.ax span:last-child{text-align:right}
+.track{position:relative;height:12px;border-radius:99px;background:var(--bg2)}
+.track i{position:absolute;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:var(--ball);border:2px solid var(--line)}
+.mini{display:flex;gap:10px;align-items:center;font-size:14px}
+.mini i{flex:none;width:14px;height:14px;border-radius:4px;border:1.5px solid var(--line)}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:10px}
+.list button{appearance:none;border:2px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);padding:8px 10px;text-align:left;font:700 13px/1.4 "Zen Kaku Gothic New",sans-serif;cursor:pointer;min-height:44px;display:flex;gap:8px;align-items:center}
+.list button i{flex:none;width:12px;height:28px;border-radius:3px}
+.zk{margin-top:28px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chips button{appearance:none;min-height:40px;padding:6px 14px;border:2px solid var(--line);border-radius:99px;background:var(--card);color:var(--ink);font:700 14px "Zen Kaku Gothic New",sans-serif;cursor:pointer}
+.chips button.on{background:var(--ink);color:var(--card)}
+.chips button:focus-visible,.zc:focus-visible{outline:3px solid var(--ball);outline-offset:3px}
+.zlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr));gap:12px}
+.zc{appearance:none;display:grid;grid-template-columns:10px minmax(0,1fr);text-align:left;border:2px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);padding:0;overflow:hidden;cursor:pointer;font:inherit;box-shadow:3px 3px 0 var(--line)}
+.zc>i{display:block}
+.zc>div{padding:12px 14px}
+.zc .type{font-size:12px;padding:1px 10px}
+.zc .nm{font-weight:900;font-size:17px;margin:6px 0 0;line-height:1.3}
+.zc .tm{font-size:12px;color:var(--mute);font-weight:700}
+.zc .tr{display:flex;flex-wrap:wrap;gap:4px;margin:6px 0}
+.zc .tr span{font-size:12px;font-weight:700;padding:0 8px;border-radius:99px;background:var(--bg2)}
+.zc p{font-size:14px;margin:4px 0 0;line-height:1.55}
+.zc.me{outline:3px solid var(--ball);outline-offset:2px}
+.zc.me .nm::after{content:"　← あなた";color:var(--ball);font-size:13px}
+.toast{min-height:1.5em;font-size:14px;font-weight:700;color:var(--ballD)}
+details summary{cursor:pointer;font-weight:900;min-height:44px;display:flex;align-items:center}
+.hide{display:none}
+.pop{animation:pop .45s ease-out}
+@keyframes pop{from{transform:translateY(12px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){.pop{animation:none}.bar i{transition:none}}
+@media(max-width:420px){.res-top{grid-template-columns:88px minmax(0,1fr)}.res-top svg{width:88px}.card{padding:18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<section id="start" class="pop">
+  <div class="hero" aria-hidden="true">
+    <svg viewBox="0 0 400 260">
+      <defs>
+        <radialGradient id="bl" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#ff9a52"/><stop offset=".6" stop-color="#f26b1d"/><stop offset="1" stop-color="#a8400a"/></radialGradient>
+      </defs>
+      <g fill="none" stroke="currentColor" stroke-width="4" opacity=".85">
+        <line x1="0" y1="200" x2="400" y2="200"/>
+        <ellipse cx="200" cy="200" rx="150" ry="44"/>
+        <ellipse cx="200" cy="200" rx="58" ry="17"/>
+      </g>
+      <ellipse cx="200" cy="208" rx="62" ry="12" fill="currentColor" opacity=".18"/>
+      <g transform="translate(200 128)">
+        <circle r="74" fill="url(#bl)" stroke="#22170f" stroke-width="4"/>
+        <g fill="none" stroke="#22170f" stroke-width="4">
+          <path d="M-74 0H74"/><path d="M0-74V74"/>
+          <path d="M-52-52C-24-30-24 30-52 52"/><path d="M52-52C24-30 24 30 52 52"/>
+        </g>
+        <ellipse cx="-26" cy="-36" rx="18" ry="9" fill="#fff" opacity=".35" transform="rotate(-30 -26 -36)"/>
+      </g>
+      <g font-family="Dela Gothic One" font-size="22" fill="currentColor">
+        <text x="22" y="48">?</text><text x="356" y="70">?</text><text x="336" y="34" font-size="15">30</text>
+      </g>
+    </svg>
+  </div>
+  <div class="card">
+    <h1>あなたは<br>どのNBAスター？</h1>
+    <p class="lead">ふだんの考え方や行動についての10問に答えると、30チームのスター選手から、あなたに一番近い1人がわかります。</p>
+    <p class="mute">バスケを知らなくても大丈夫です。選手の強みと、仕事や勉強に活かすヒントもお届けします。所要時間は約2分です。</p>
+    <div class="row"><button class="btn" id="go">診断をはじめる</button></div>
+  </div>
+</section>
+
+<section id="quiz" class="hide">
+  <div class="card">
+    <div class="qn" id="qn"></div>
+    <div class="bar"><i id="prog" style="width:0"></i></div>
+    <div class="q" id="qt"></div>
+    <div class="opts" id="opts"></div>
+    <div class="row"><button class="btn sub" id="back">← ひとつ戻る</button></div>
+  </div>
+</section>
+
+<section id="result" class="hide">
+  <div class="card pop" id="rcard"></div>
+  <div class="card" style="margin-top:20px">
+    <h3 style="margin:0 0 4px;font-size:17px">結果をシェアする</h3>
+    <p class="mute">結果とこの診断のリンクをまとめて送れます。</p>
+    <div class="row">
+      <button class="btn" id="copy">結果の文章をコピー</button>
+      <a class="btn sub" id="xshare" href="#" target="_blank" rel="noopener">Xでポスト</a>
+      <a class="btn sub" id="lshare" href="#" target="_blank" rel="noopener">LINEで送る</a>
+    </div>
+    <div class="toast" id="toast" role="status"></div>
+  </div>
+  <div class="card" style="margin-top:20px">
+    <div class="row" style="margin-top:0"><button class="btn" id="again">もう一度診断する</button><a class="btn sub" href="#zukan" id="tozk">30選手の性格一覧</a></div>
+  </div>
+</section>
+
+<section id="zukan" class="zk">
+  <h2>30選手の性格一覧</h2>
+  <p class="mute">全チームのスター選手の性格タイプです。気になる性格で絞り込めます。カードをタップすると詳しい解説が見られます。</p>
+  <div class="chips" id="chips"></div>
+  <div class="zlist" id="all"></div>
+  <p class="mute" style="margin-top:18px">選手の所属は2026-27シーズン開幕時点の情報です。各チーム1人を、そのチームの中心選手として選んでいます。このページはNBAおよび各チームとは関係のない非公式のファン作品で、写真やロゴは使っていません。</p>
+</section>
+
+</div>
+<script>
+{
+// 軸: 0 リーダー(+)/サポート(-), 1 チャレンジ(+)/堅実(-), 2 コツコツ(+)/ひらめき(-), 3 冷静(+)/情熱(-), 4 にぎやか(+)/もの静か(-)
+const AX=[["サポート","リーダー"],["堅実","チャレンジ"],["ひらめき","コツコツ"],["情熱","冷静"],["もの静か","にぎやか"]];
+const Q=[
+ ["友達との旅行。計画を立てるとき、あなたは？",[["行き先も日程も、まず自分が決めて引っ張る",[2,0,0,0,1]],["みんなの希望を聞いて、うまくまとめる",[-2,0,0,1,0]],["下調べを徹底して、最高のプランを作る",[0,-1,2,1,0]],["ノリで決めて、当日なんとかする",[0,2,-2,0,0]]]],
+ ["締め切り直前の大事な場面。どうなる？",[["燃えてくる。プレッシャーは嫌いじゃない",[1,1,0,-2,0]],["いつも通り、淡々とこなす",[0,0,0,2,-1]],["仲間に声をかけて、一緒に乗り切る",[-1,0,0,0,2]],["前もって準備してあるので慌てない",[0,-1,2,0,0]]]],
+ ["理想の休日の過ごし方は？",[["友達と集まってわいわい",[0,0,0,-1,2]],["一人で趣味にとことん没頭",[0,0,1,0,-2]],["行ったことのない場所に出かける",[0,2,0,0,0]],["のんびり休んで、ゆっくり回復",[0,-1,-1,1,0]]]],
+ ["大きな失敗をしてしまった。そのあとは？",[["悔しさをバネに、練習量を増やす",[0,0,2,-1,0]],["何が原因だったか、冷静に分析する",[0,-1,0,2,0]],["笑い飛ばして、すぐ次へ",[0,1,-1,0,1]],["誰かに相談して、一緒に立て直す",[-2,0,0,0,1]]]],
+ ["言われて一番うれしいほめ言葉は？",[["「あなたがいると頼りになる」",[2,0,0,0,0]],["「あなたのおかげで助かったよ」",[-2,0,0,0,0]],["「その発想はなかった！」",[0,1,-2,0,0]],["「ずっと続けていてすごいね」",[0,0,2,0,0]]]],
+ ["新しいゲームやアプリを始めるときは？",[["説明は読まずに、とりあえず触ってみる",[0,1,-2,-1,0]],["使い方を調べてから始める",[0,-2,1,1,0]],["友達を誘って一緒に始める",[-1,0,0,0,2]],["自分なりの楽しみ方を見つける",[1,1,-1,0,-1]]]],
+ ["チームの中で、一番しっくりくる役割は？",[["ここぞで決める、エース",[2,1,0,0,0]],["全体を見て指示を出す、司令塔",[-1,0,0,2,0]],["場を明るくする、ムードメーカー",[0,0,0,-1,2]],["目立たなくても支える、縁の下の力持ち",[-2,0,1,0,-1]]]],
+ ["うれしい時や悔しい時、感情はどう出る？",[["全部そのまま顔に出る",[0,0,0,-2,1]],["表情はあまり変わらない",[0,0,0,2,-1]],["言葉にして、まわりに伝える",[1,0,0,0,1]],["口には出さず、行動で示す",[0,0,1,0,-2]]]],
+ ["目標の立て方に一番近いのは？",[["誰も見たことのない、大きな目標を掲げる",[1,2,0,0,0]],["小さな目標をひとつずつ積み重ねる",[0,-1,2,0,0]],["仲間と一緒にかなえたい目標にする",[-1,0,0,0,1]],["楽しめていれば、それで満足",[0,0,-2,1,0]]]],
+ ["まわりに「それは無理だよ」と言われたら？",[["かえって燃える",[1,1,0,-2,0]],["何も言わず、結果で見返す",[0,0,1,1,-2]],["一理あるかどうか、冷静に考え直す",[0,-2,0,1,0]],["一緒にやってくれる仲間を探す",[-1,1,0,0,1]]]]
+];
+// [英名, カナ, チーム, 色1, 色2, タイプ名, 特徴ベクトル, 強み・マインド, 学べること, 活かし方]
+const P=[
+ ["Jalen Johnson","ジェイレン・ジョンソン","アトランタ・ホークス","#e03a3e","#26282a","何でもこなす成長株",[-1,1,1,0,2],"点を取る、パスを出す、リバウンドを拾う。ひとつの役割にこだわらず、チームに足りないものを自分で埋めながら年々スケールを大きくしてきた万能型です。","「自分の担当はここまで」と線を引かない姿勢","チームで空いている仕事をひとつ拾ってみましょう。できることの幅は、引き受けた分だけ広がります。"],
+ ["Jayson Tatum","ジェイソン・テイタム","ボストン・セルティックス","#007a33","#ba9653","大ケガから戻ったエース",[1,1,1,2,0],"2025年にアキレス腱の大ケガを負いながら、地道なリハビリを経てコートに戻ってきました。攻守どちらもできる完成度の高さと、逆境でもぶれない落ち着きが持ち味です。","うまくいかない時期を「準備期間」に変える力","思うように進まない時期は、基礎の見直しに使いましょう。戻ってきたとき、前より強くなっています。"],
+ ["Michael Porter Jr.","マイケル・ポーターJr.","ブルックリン・ネッツ","#000000","#ffffff","不屈のシューター",[1,2,0,-1,0],"若いころに何度も腰のケガで手術を受け、「もう無理では」と言われながら、高い打点のシュートを武器に第一線に立ち続けています。新天地ブルックリンでは中心選手を任されています。","評価が下がっても、自分の武器を磨き続ける粘り","人からの評価が揺れても、自分の一番の得意をひとつ決めて磨き続けましょう。"],
+ ["Kon Knueppel","コン・クニッペル","シャーロット・ホーネッツ","#1d1160","#00788c","賢く打ち抜く若き職人",[-2,-1,1,1,-1],"2025年ドラフト4位で入団した若手。派手な身体能力よりも、正確なシュートと状況を読む頭の良さで勝負するタイプで、1年目から主力として活躍しました。","才能より「再現できる技術」を積み上げる考え方","毎回同じ質で出せる手順を作りましょう。調子に左右されない人は、どこでも信頼されます。"],
+ ["Josh Giddey","ジョシュ・ギディー","シカゴ・ブルズ","#ce1141","#000000","視野の広いパスの名人",[-2,1,-1,0,1],"オーストラリア出身。大きな体で全体を見渡し、味方が一番打ちやすいタイミングでボールを届けます。自分が点を取るより、チーム全体を動かすことに喜びを感じるタイプです。","まわりの人の「次の一歩」を先に見る視野","会議や共同作業では、相手が次に何を必要とするかを考えて情報を渡してみましょう。"],
+ ["Donovan Mitchell","ドノバン・ミッチェル","クリーブランド・キャバリアーズ","#860038","#fdbb30","爆発力のスコアラー",[2,2,0,0,2],"身長は大きくないものの、爆発的なスピードとジャンプ力で得点を量産するエース。ドラフト時の評価を大きく上回る活躍で、チームの顔になりました。","「体格や前評判は関係ない」という自信","最初の評価が低くても気にしすぎないこと。行動量とスピードで、印象はひっくり返せます。"],
+ ["Cooper Flagg","クーパー・フラッグ","ダラス・マーベリックス","#00538c","#b8c4ca","全力投球のルーキースター",[-1,1,2,-1,0],"2025年ドラフト全体1位。得点だけでなく、守備やルーズボールなど泥くさいプレーにも一切手を抜かないことで知られます。若くしてチームの未来を背負う存在です。","才能があっても「地味な仕事」を手放さない姿勢","目立つ仕事だけでなく、確認や片付けのような地味な作業も丁寧に。信頼はそこから生まれます。"],
+ ["Nikola Jokić","ニコラ・ヨキッチ","デンバー・ナゲッツ","#0e2240","#fec524","ひらめきの天才司令塔",[-2,0,-2,2,1],"セルビア出身。ドラフト2巡目41位という低い評価から、MVPを何度も受賞するリーグ最高の選手になりました。誰も思いつかないパスで味方を生かし、本人はいたってマイペース。オフは馬を愛する素朴な人柄です。","自分のペースを守り、他人を輝かせることを楽しむ心","競争に疲れたら、「誰かを活かすこと」を自分の得点だと考えてみましょう。結果的に自分の評価も上がります。"],
+ ["Cade Cunningham","ケイド・カニングハム","デトロイト・ピストンズ","#c8102e","#1d42ba","チームを立て直す冷静なリーダー",[1,-1,1,2,1],"2021年ドラフト全体1位。所属チームが記録的な連敗に苦しんだ時期を経験しながら、落ち着いたゲームメイクでチームを上位に押し上げました。","どん底の状況でも、淡々と積み重ねてチームを変える力","うまくいっていない組織でも、まず自分の役割で小さな成功を作りましょう。空気は少しずつ変わります。"],
+ ["Stephen Curry","ステフィン・カリー","ゴールデンステート・ウォリアーズ","#1d428a","#ffc72c","常識を変えた努力の革命家",[0,2,0,0,2],"「体が細すぎる」と言われた若手時代から、圧倒的な練習量で3ポイントシュートを極め、バスケの戦い方そのものを変えました。プレー中も楽しそうな笑顔が印象的です。","好きなことを、誰よりも楽しみながら続ける力","「楽しい」と思えるやり方を見つけて続けましょう。楽しんで積み上げた量は、才能を超えます。"],
+ ["Kevin Durant","ケビン・デュラント","ヒューストン・ロケッツ","#ce1141","#c4ced4","静かな得点の職人",[1,0,2,2,-2],"長い手足と正確なシュートで、得点王を何度も獲得してきた歴代屈指のスコアラー。ベテランになった今も、毎日のシュート練習を欠かさないことで知られます。","何年たっても基本練習をやめない、職人のこだわり","慣れた仕事ほど基本の手順を大切に。続けるほど、誰にも真似できない精度になります。"],
+ ["Tyrese Haliburton","タイリース・ハリバートン","インディアナ・ペイサーズ","#002d62","#fdbb30","明るさで周りを動かす司令塔",[-2,1,1,0,2],"パス第一の司令塔で、ここ一番の決勝シュートでも有名です。2025年のファイナルでアキレス腱を痛めましたが、前向きな姿勢でチームを盛り上げ続けています。","明るさと気配りで、チーム全体の力を引き出す","グループで動くときは、まず人の良いところを口に出してみましょう。場の空気が、成果を変えます。"],
+ ["Darius Garland","ダリアス・ガーランド","ロサンゼルス・クリッパーズ","#c8102e","#1d428a","しなやかなテクニシャン",[-1,0,-1,1,-1],"巧みなドリブルと滑らかなシュートで相手をかわす技巧派の司令塔。2026年に新天地ロサンゼルスへ移り、新しいチームの中心を任されています。","環境が変わっても、自分のリズムで力を出せる柔軟さ","異動や進学で環境が変わったときは、まず自分の得意を一つ見せること。そこから居場所ができます。"],
+ ["Luka Dončić","ルカ・ドンチッチ","ロサンゼルス・レイカーズ","#552583","#fdb927","遊び心あふれる創造者",[1,1,-2,0,2],"スロベニア出身。10代でヨーロッパの名門クラブでプロになり、NBAでも若くしてスーパースターに。教科書にないシュートやパスを楽しそうに決める、自由な発想の持ち主です。","型にはまらず、遊び心で解決策を見つける","行き詰まったら「普通はこうする」を一度忘れて、別のやり方を試しましょう。"],
+ ["Cameron Boozer","キャメロン・ブーザー","メンフィス・グリズリーズ","#5d76a9","#12173f","チームの新しい柱",[-2,-2,1,1,0],"2026年ドラフト全体3位で入団した新星。元NBA選手の父を持ち、パワーと判断力をバランスよく備えます。主力が入れ替わったチームで、新しい中心として期待を集めています。","派手さより、確実にチームを勝たせる判断","自分が目立つかより、チームの結果が良くなるかで選択しましょう。結局それが一番評価されます。"],
+ ["Giannis Antetokounmpo","ヤニス・アデトクンボ","マイアミ・ヒート","#98002e","#f9a01b","ハングリー精神の怪物",[1,2,1,-1,1],"ギリシャで、家族を支えるため路上で物を売っていた少年が、努力の末にMVPと優勝をつかみました。2026年夏にマイアミへ移り、新たな挑戦を始めています。","今の環境に満足せず、自分を磨き続けるハングリーさ","「昨日の自分より少しだけ上へ」を毎日の目標に。小さな成長の積み重ねが、大きな差になります。"],
+ ["Tyler Herro","タイラー・ヒーロー","ミルウォーキー・バックス","#00471b","#eee1c6","自信満々の勝負師",[1,0,1,-1,0],"控えからのスタートでも臆することなく得点を重ね、最優秀シックスマン賞を受賞。2026年夏にミルウォーキーへ移り、今度はチームの中心を担います。","立場に関係なく「自分ならできる」と信じる自信","役割が小さくても、自分の仕事に自信を持って取り組みましょう。チャンスは準備している人に来ます。"],
+ ["Anthony Edwards","アンソニー・エドワーズ","ミネソタ・ティンバーウルブズ","#0c2340","#78be20","恐れ知らずのカリスマ",[1,2,-2,-2,2],"強気な発言と豪快なプレーで観客を沸かせる、リーグ屈指の人気者。どんな相手にも物おじしない度胸と、明るいキャラクターでチームを引っ張ります。","大舞台を怖がらず、楽しむ度胸","発表や面接など緊張する場面ほど、「楽しむ」と決めてから臨んでみましょう。"],
+ ["Zion Williamson","ザイオン・ウィリアムソン","ニューオーリンズ・ペリカンズ","#0c2340","#c8102e","規格外のパワーファイター",[1,2,-1,0,1],"重量級の体なのに、驚くほど高く跳ぶ規格外の身体能力。ケガに悩まされた時期もありますが、そのたびに戻ってきて、誰にも真似できないプレーを見せています。","自分だけの強みを信じて、正面からぶつかる","人と同じやり方で勝てないときは、自分だけの強みが一番生きる場所を探しましょう。"],
+ ["Jalen Brunson","ジェイレン・ブランソン","ニューヨーク・ニックス","#006bb6","#f58426","見返す力のキャプテン",[2,-1,2,2,1],"ドラフト2巡目で、体も大きくないと評価は高くありませんでした。それでも細かな足さばきと地道な研究で一流の得点源になり、名門チームのキャプテンを務めています。","低い前評判を、準備の量でひっくり返す","自分が不利だと思う分野ほど、人より細かく準備しましょう。準備は裏切りません。"],
+ ["Shai Gilgeous-Alexander","シェイ・ギルジャス=アレクサンダー","オクラホマシティ・サンダー","#007ac1","#ef3b24","いつも自分のリズムの頂点",[1,-1,0,2,0],"カナダ出身。急がず慌てず、独特のリズムで相手を揺さぶり得点を重ねます。2025年にMVPと優勝を同時に達成。おしゃれなファッションでも注目される存在です。","周りに流されず、自分のペースで勝ち切る冷静さ","焦るときほど一度ペースを落とし、自分の得意な手順で進めましょう。"],
+ ["Paolo Banchero","パオロ・バンケロ","オーランド・マジック","#0077c0","#c4ced4","若くして背負う覚悟の人",[2,1,0,0,0],"2022年ドラフト全体1位で、1年目に新人王を受賞。力強いプレーで若いチームの得点源を担い、勝負どころでボールを任される存在です。","若くても責任から逃げない覚悟","経験が浅くても、「自分がやります」と手を挙げてみましょう。任されることで人は伸びます。"],
+ ["Jaylen Brown","ジェイレン・ブラウン","フィラデルフィア・セブンティシクサーズ","#006bb6","#ed174c","考えて発信するアスリート",[-1,1,1,1,2],"2024年のファイナルMVP。コートの外でも、教育や社会問題について自分の言葉で発信する知性派です。2026年夏にフィラデルフィアへ移り、新しいチームの中心になりました。","競技だけでなく、広い視野で考え学び続ける姿勢","専門分野以外の本や人にも触れてみましょう。違う分野の知識が、本業の発想を広げます。"],
+ ["Devin Booker","デビン・ブッカー","フェニックス・サンズ","#1d1160","#e56020","一つの場所を貫くアーティスト",[2,1,1,2,-1],"1試合70得点という記録を持つ得点の名手。デビューからずっと同じチームでプレーし続け、苦しい時期もチームと共に歩んできました。","一つの場所で、自分の技を極め続ける誠実さ","すぐに結果が出なくても、決めた場所で続けてみましょう。続けた人にしか見えない景色があります。"],
+ ["Deni Avdija","デニ・アブディヤ","ポートランド・トレイルブレイザーズ","#e03a3e","#000000","毎年進化する努力家",[0,1,0,0,0],"イスラエル出身。毎シーズン課題を一つずつ克服して、守備の選手から得点も取れる中心選手へと大きく成長しました。","自分の弱点を一つずつ、確実に強みに変える","苦手を全部直そうとせず、今年はこれ、と一つに絞って取り組みましょう。"],
+ ["Domantas Sabonis","ドマンタス・サボニス","サクラメント・キングス","#5a2d81","#63727a","リバウンドを拾い続ける働き者",[-2,-1,2,-1,1],"リトアニア出身。伝説的な名選手の父を持ちながら、自分は泥くさいリバウンドとパスで勝負。リバウンド王に何度も輝いた、チーム一の働き者です。","誰かが落としたボールを、何度でも拾いにいく","チームのミスやこぼれた仕事を、さっと拾える人になりましょう。いちばん頼られるのはそういう人です。"],
+ ["Victor Wembanyama","ビクター・ウェンバンヤマ","サンアントニオ・スパーズ","#000000","#c4ced4","好奇心の宇宙人",[-1,2,0,0,-1],"フランス出身、2m20cmを超える長身で、大きな選手らしからぬドリブルやシュートもこなす唯一無二の存在。チェスを好み、修行のため少林寺を訪れたこともある探究心の持ち主です。","「前例がない」ことを、むしろ楽しむ好奇心","前例がない挑戦ほど、自分で実験して答えを作る楽しさがあります。小さく試してみましょう。"],
+ ["Kawhi Leonard","カワイ・レナード","トロント・ラプターズ","#ce1141","#000000","寡黙な仕事人",[0,-2,2,1,-1],"口数は少なく、感情をほとんど表に出さない寡黙なスター。攻守両方で相手を封じ込め、2度のファイナルMVPに。2019年に優勝へ導いたトロントに、2026年に戻ってきました。","言葉より結果で語る、静かな集中力","アピールが苦手でも大丈夫。黙って質の高い仕事を続ければ、ちゃんと見てくれる人がいます。"],
+ ["Lauri Markkanen","ラウリ・マルッカネン","ユタ・ジャズ","#3e2680","#000000","静かに殻を破った人",[-2,0,2,1,-2],"フィンランド出身。控えめな性格ながら、新しいチームで役割が広がると一気に開花し、最も成長した選手に選ばれました。","環境が変わったときに、自分の新しい面を出す勇気","新しい場所では、前の自分のイメージにとらわれず、やってみたかった役割に挑戦しましょう。"],
+ ["Anthony Davis","アンソニー・デイビス","ワシントン・ウィザーズ","#002b5c","#e31837","守って支える万能ビッグマン",[-2,0,-1,1,2],"長い腕と高い身体能力で、守備でも攻撃でもチームを支える万能型。2020年には優勝を経験し、新天地ワシントンでは若いチームの手本となっています。","自分が守りを固めることで、仲間を自由にする","チームの土台になる仕事、例えば準備や確認を引き受けましょう。仲間が思い切り動けるようになります。"]
+];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const slug=p=>p[0].toLowerCase().normalize("NFD").replace(/[^a-z]/g,"");
+let ans=[],cur=0,me=null;
+const show=id=>{for(const s of ["start","quiz","result"])$(s).classList.toggle("hide",s!==id);$("zukan").classList.toggle("hide",id==="quiz");if(typeof renderZ==="function")renderZ();window.scrollTo(0,0)};
+const renderQ=()=>{
+  const [t,os]=Q[cur];
+  $("qn").textContent=`質問 ${cur+1} / ${Q.length}`;
+  $("prog").style.width=(cur/Q.length*100)+"%";
+  $("qt").textContent=t;
+  $("opts").innerHTML=os.map((o,i)=>`<button class="opt${ans[cur]===i?" on":""}" data-i="${i}"><b>${"ABCD"[i]}</b><span>${esc(o[0])}</span></button>`).join("");
+  $("back").style.visibility=cur?"visible":"hidden";
+};
+const TOT=[0,1,2,3,4].map(k=>Q.reduce((t,q)=>t+Math.max(...q[1].map(o=>Math.abs(o[1][k]))),0));
+const score=a=>{const v=[0,0,0,0,0];a.forEach((ai,i)=>Q[i][1][ai][1].forEach((x,k)=>v[k]+=x));
+  return v.map((x,k)=>Math.max(-2,Math.min(2,x/TOT[k]*2*1.8)))};
+const cos=(a,b)=>{let d=0,na=0,nb=0;for(let k=0;k<5;k++){d+=a[k]*b[k];na+=a[k]*a[k];nb+=b[k]*b[k]}return d/Math.sqrt(na*nb||1)};
+const match=v=>{let b=0,bd=-9;P.forEach((p,i)=>{const d=cos(p[6],v);if(d>bd){bd=d;b=i}});return b};
+const jersey=p=>{const ini=p[0].split(/[ .-]/).filter(w=>/^[A-Z]/.test(w)).map(w=>w[0]).join("").slice(0,2);
+  return `<svg viewBox="0 0 120 130" aria-hidden="true"><ellipse cx="60" cy="124" rx="40" ry="5" fill="currentColor" opacity=".18"/>
+  <path d="M38 8h12c2 9 18 9 20 0h12l4 22c6 2 12 6 16 12l-14 8-4-6v76H36V44l-4 6-14-8c4-6 10-10 16-12z" fill="${p[3]}" stroke="#22170f" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M50 8c2 9 18 9 20 0" fill="none" stroke="${p[4]}" stroke-width="5"/>
+  <path d="M38 8l-4 22M82 8l4 22" stroke="${p[4]}" stroke-width="4" opacity=".9"/>
+  <text x="60" y="86" text-anchor="middle" font-family="Dela Gothic One" font-size="30" fill="${p[4]}" stroke="#22170f" stroke-width="1">${esc(ini)}</text></svg>`};
+const renderR=(i,v)=>{
+  const p=P[i];me=i;
+  const axes=(v||p[6]);
+  $("rcard").innerHTML=`<div class="res-top">${jersey(p)}<div><span class="type">${esc(p[5])}</span>
+   <div class="pname disp">${esc(p[1])}</div><div class="en">${esc(p[0])}</div>
+   <div class="mini" style="margin-top:6px"><i style="background:${p[3]}"></i>${esc(p[2])}</div></div></div>
+   <div class="sec"><h3>${v?"あなたにそっくりなのは、この選手":"この選手のタイプ"}</h3><p>${esc(p[7])}</p></div>
+   <div class="sec"><h3>この選手から学べること</h3><p>${esc(p[8])}</p></div>
+   <div class="sec"><h3>仕事や勉強に活かすなら</h3><p class="tip">${esc(p[9])}</p></div>
+   <div class="sec"><h3>${v?"あなたの傾向":"この選手の傾向"}</h3><div class="axes">${AX.map((a,k)=>`<div class="ax"><span>${a[0]}</span><div class="track"><i style="left:${(axes[k]+2)/4*100}%"></i></div><span>${a[1]}</span></div>`).join("")}</div></div>`;
+  $("rcard").classList.remove("pop");void $("rcard").offsetWidth;$("rcard").classList.add("pop");
+  const url=location.origin+location.pathname;
+  const txt=`NBA選手タイプ診断の結果、私は「${p[5]}」${p[1]}（${p[2]}）タイプでした！\n学べること：${p[8]}\n#NBA選手診断`;
+  $("xshare").href="https://twitter.com/intent/tweet?text="+encodeURIComponent(txt)+"&url="+encodeURIComponent(url);
+  $("lshare").href="https://social-plugins.line.me/lineit/share?text="+encodeURIComponent(txt)+"&url="+encodeURIComponent(url);
+  $("copy").dataset.t=txt+"\n"+url;$("toast").textContent="";
+  try{history.replaceState(null,"","#"+slug(p))}catch(e){}
+  show("result");
+};
+const trait=p=>p[6].map((x,k)=>[x,k]).filter(a=>a[0]).sort((a,b)=>Math.abs(b[0])-Math.abs(a[0])).slice(0,3).map(a=>AX[a[1]][a[0]>0?1:0]);
+let filt=null;
+const renderZ=()=>{$("chips").innerHTML=[null,...AX.flat()].map(t=>`<button class="${t===filt?"on":""}" data-t="${t||""}">${t?esc(t)+"型":"全員"}</button>`).join("");
+  const L=P.map((p,i)=>[p,i,trait(p)]).filter(x=>!filt||x[2].includes(filt));
+  $("all").innerHTML=L.map(([p,i,tr])=>`<button class="zc${i===me&&resultMine?" me":""}" data-i="${i}"><i style="background:linear-gradient(${p[3]} 65%,${p[4]} 65%)"></i><div><span class="type">${esc(p[5])}</span><div class="nm">${esc(p[1])}</div><div class="tm">${esc(p[2])}</div><div class="tr">${tr.map(t=>`<span>${esc(t)}</span>`).join("")}</div><p>${esc(p[8])}</p></div></button>`).join("")||'<p class="mute">該当する選手がいません。</p>'};
+let resultMine=false;
+$("chips").onclick=e=>{const b=e.target.closest("button");if(!b)return;filt=b.dataset.t||null;renderZ()};
+renderZ();
+$("go").onclick=()=>{ans=[];cur=0;renderQ();show("quiz")};
+$("again").onclick=()=>{try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}ans=[];cur=0;renderQ();show("quiz")};
+$("opts").onclick=e=>{const b=e.target.closest(".opt");if(!b)return;ans[cur]=+b.dataset.i;
+  if(cur<Q.length-1){cur++;renderQ()}else{const v=score(ans);try{localStorage.setItem("nbaq",JSON.stringify(ans))}catch(e){}resultMine=true;renderR(match(v),v)}};
+$("back").onclick=()=>{if(cur>0){cur--;renderQ()}};
+$("all").onclick=e=>{const b=e.target.closest(".zc");if(b){resultMine=false;renderR(+b.dataset.i,null)}};
+$("tozk").onclick=e=>{e.preventDefault();$("zukan").scrollIntoView({behavior:"smooth"})};
+$("copy").onclick=async()=>{try{await navigator.clipboard.writeText($("copy").dataset.t);$("toast").textContent="コピーしました。SNSやメッセージに貼り付けてください。"}catch(e){$("toast").textContent="コピーできませんでした。下の文章を長押しでコピーしてください：\n"+$("copy").dataset.t}};
+const fromHash=()=>{const h=location.hash.slice(1);const i=P.findIndex(p=>slug(p)===h);if(i>=0)renderR(i,null)};
+window.addEventListener("hashchange",fromHash);fromHash();
+}
+</script>
+</body>
+</html>
