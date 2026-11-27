@@ -36,4 +36,4 @@ jobs:
           git config user.email "41898332+github-actions[bot]@users.noreply.github.com"
           git add kpop-comeback/data.json kpop-comeback/artists.json
           git commit -m "カムバカレンダーのデータを自動更新"
-          git push
+          git pull --rebase -q && git push
