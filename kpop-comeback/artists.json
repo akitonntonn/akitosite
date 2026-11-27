@@ -6,7 +6,7 @@
  },
  {
   "name": "NCT",
-  "mbid": "",
+  "mbid": "9c15986d-ff1f-4d91-9708-f50f7445884f",
   "fav": true
  },
  {
@@ -49,7 +49,7 @@
  },
  {
   "name": "SEVENTEEN",
-  "mbid": ""
+  "mbid": "e04d239e-9fa8-49b3-b9b7-9e439c3cb1d1"
  },
  {
   "name": "Stray Kids",
@@ -73,7 +73,7 @@
  },
  {
   "name": "BOYNEXTDOOR",
-  "mbid": ""
+  "mbid": "656d0024-7b5f-4089-9d3e-ce383f15f1b7"
  },
  {
   "name": "TWS",
@@ -113,15 +113,15 @@
  },
  {
   "name": "KISS OF LIFE",
-  "mbid": ""
+  "mbid": "cbe629e3-fbbd-4071-9e12-4c5074c2231b"
  },
  {
   "name": "i-dle",
-  "mbid": ""
+  "mbid": "0068ae6c-7156-40f9-a81f-39294af6a549"
  },
  {
   "name": "TWICE",
-  "mbid": ""
+  "mbid": "8da127cc-c432-418f-b356-ef36210d82ac"
  },
  {
   "name": "ZEROBASEONE",
@@ -145,7 +145,7 @@
  },
  {
   "name": "ALLDAY PROJECT",
-  "mbid": ""
+  "mbid": "ce5c564c-0fbe-429c-b93b-5d7e3109cf40"
  },
  {
   "name": "Red Velvet",
@@ -153,7 +153,7 @@
  },
  {
   "name": "EXO",
-  "mbid": ""
+  "mbid": "b3785a55-2cf6-497d-b8e3-cfa21a36f997"
  },
  {
   "name": "SHINee",
@@ -197,6 +197,6 @@
  },
  {
   "name": "Baby DONT Cry",
-  "mbid": ""
+  "mbid": "e636499d-e34d-4154-be4c-2de9210d12c3"
  }
 ]
