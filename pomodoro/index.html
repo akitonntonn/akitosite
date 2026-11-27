@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ポモドーロ勉強タイマー</title>
+<meta name="description" content="25分集中して5分休む、ポモドーロ・テクニックの勉強タイマー。今日の勉強時間と直近7日の記録がブラウザに自動で残ります。登録不要・無料。">
+<meta property="og:title" content="ポモドーロ勉強タイマー">
+<meta property="og:description" content="25分集中→5分休憩をくり返す勉強タイマー。今日の勉強時間を自動で記録。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="theme-color" content="#e2553b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='56' r='38' fill='%23e2553b' stroke='%23231a14' stroke-width='6'/%3E%3Cpath d='M50 20c-4-8-12-10-18-8 6 2 10 6 12 10M50 20c6-6 14-6 20-2-6 0-12 3-14 7' fill='%232f9e74' stroke='%23231a14' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M50 38v20l12 8' fill='none' stroke='%23fff' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap">
+<style>
+/* 1カラム・スマホ優先。集中=トマトの赤、休憩=葉の緑。フォントは診断ページと共通 */
+:root{color-scheme:light dark;
+--bg:light-dark(#f7efe6,#1b1612);--card:light-dark(#fffaf4,#26201a);--ink:light-dark(#231a14,#f6eee6);
+--mute:light-dark(#6f6257,#bfb2a5);--line:light-dark(#231a14,#f6eee6);--soft:light-dark(#eadccc,#3a3129);
+--focus:#e2553b;--focusD:#b83a24;--brk:#2f9e74;--brkD:#1f7655;--accent:var(--focus);--accentD:var(--focusD)}
+body.is-break{--accent:var(--brk);--accentD:var(--brkD)}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "Zen Kaku Gothic New",system-ui,sans-serif;
+padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+.wrap{max-width:520px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+h1{font:400 clamp(20px,5.4vw,26px)/1.2 "Dela Gothic One",sans-serif;margin:0;letter-spacing:.02em}
+.back{color:var(--mute);font-size:13px;text-decoration:none;white-space:nowrap}
+.back:hover{color:var(--ink)}
+.card{background:var(--card);border:2.5px solid var(--line);border-radius:22px;box-shadow:5px 5px 0 var(--line);padding:18px;margin-bottom:18px}
+.modes{display:flex;gap:6px;background:var(--soft);border-radius:999px;padding:4px}
+.modes button{flex:1;border:0;background:transparent;color:var(--mute);font:700 14px/1 "Zen Kaku Gothic New",sans-serif;padding:10px 4px;border-radius:999px;cursor:pointer}
+.modes button[aria-pressed=true]{background:var(--card);color:var(--ink);box-shadow:0 1px 0 var(--line),0 0 0 2px var(--line) inset}
+.dial{position:relative;width:min(78vw,300px);aspect-ratio:1;margin:18px auto 8px}
+.dial svg{width:100%;height:100%;transform:rotate(-90deg)}
+.dial .track{stroke:var(--soft)}
+.dial .prog{stroke:var(--accent);transition:stroke-dashoffset .4s linear,stroke .3s}
+.dial .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.time{font:400 clamp(52px,17vw,76px)/1 "Dela Gothic One",sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.phase{font-weight:900;color:var(--accent);margin-top:8px;font-size:15px}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:8px}
+.dots i{width:10px;height:10px;border-radius:50%;border:2px solid var(--line);background:transparent}
+.dots i.on{background:var(--focus)}
+.ctrl{display:flex;gap:10px;justify-content:center;align-items:center;margin-top:10px}
+.btn{border:2.5px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);font:900 15px/1 "Zen Kaku Gothic New",sans-serif;white-space:nowrap;padding:13px 18px;cursor:pointer;box-shadow:3px 3px 0 var(--line);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--line)}
+.btn.main{background:var(--accent);color:#fff;min-width:140px;font-size:18px;padding:16px 24px}
+.btn.sm{padding:12px 14px;font-size:13px}
+.btn:focus-visible,.modes button:focus-visible,.set input:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+h2{font:900 17px/1.3 "Zen Kaku Gothic New",sans-serif;margin:0 0 12px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--soft);border-radius:14px;padding:12px}
+.stat b{display:block;font:400 26px/1.2 "Dela Gothic One",sans-serif;font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--mute);font-weight:700}
+.goal{margin-top:12px}
+.bar{height:12px;border-radius:999px;background:var(--soft);overflow:hidden;border:2px solid var(--line)}
+.bar>div{height:100%;background:var(--focus);width:0;transition:width .4s}
+.goal p{margin:6px 0 0;font-size:13px;color:var(--mute)}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:130px;margin-top:6px}
+.week .col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px}
+.week .b{width:100%;max-width:30px;background:var(--focus);border-radius:6px 6px 2px 2px;min-height:2px;opacity:.85}
+.week .col.today .b{opacity:1;box-shadow:0 0 0 2px var(--line)}
+.week small{font-size:11px;color:var(--mute);font-weight:700;line-height:1.2;text-align:center}
+.week .v{font-size:10px;color:var(--mute)}
+details summary{cursor:pointer;font-weight:900;list-style:none;display:flex;justify-content:space-between}
+details summary::after{content:"＋";color:var(--mute)}
+details[open] summary::after{content:"－"}
+.sets{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.set label{display:block;font-size:12px;font-weight:700;color:var(--mute);margin-bottom:4px}
+.set input[type=number]{width:100%;font:700 16px "Zen Kaku Gothic New",sans-serif;padding:9px 10px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.toggle{display:flex;align-items:center;gap:8px;font-size:14px;margin-top:12px;font-weight:700}
+.toggle input{width:20px;height:20px;accent-color:var(--focus)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.note{font-size:12px;color:var(--mute);margin:10px 0 0}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:999px;font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:.25s;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>ポモドーロ勉強タイマー</h1>
+    <a class="back" href="/">← トップへ</a>
+  </header>
+
+  <section class="card" aria-label="タイマー">
+    <div class="modes" role="group" aria-label="モード">
+      <button type="button" data-mode="focus" aria-pressed="true">集中</button>
+      <button type="button" data-mode="short" aria-pressed="false">小休憩</button>
+      <button type="button" data-mode="long" aria-pressed="false">長い休憩</button>
+    </div>
+    <div class="dial">
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="track" cx="60" cy="60" r="54" fill="none" stroke-width="9"/>
+        <circle class="prog" id="prog" cx="60" cy="60" r="54" fill="none" stroke-width="9" stroke-linecap="round"/>
+      </svg>
+      <div class="center">
+        <div class="time" id="time" role="timer" aria-live="off">25:00</div>
+        <div class="phase" id="phase">集中しよう</div>
+        <div class="dots" id="dots" aria-label="長い休憩までのセット数"></div>
+      </div>
+    </div>
+    <div class="ctrl">
+      <button type="button" class="btn sm" id="reset" aria-label="リセット">リセット</button>
+      <button type="button" class="btn main" id="start">スタート</button>
+      <button type="button" class="btn sm" id="skip" aria-label="次へスキップ">スキップ</button>
+    </div>
+  </section>
+
+  <section class="card" aria-label="今日の記録">
+    <h2>今日の勉強</h2>
+    <div class="stats">
+      <div class="stat"><b id="todayTime">0分</b><span>勉強時間</span></div>
+      <div class="stat"><b id="todayCount">0回</b><span>集中できたセット</span></div>
+    </div>
+    <div class="goal">
+      <div class="bar"><div id="goalBar"></div></div>
+      <p id="goalText">目標まであと120分</p>
+    </div>
+  </section>
+
+  <section class="card" aria-label="直近7日の記録">
+    <h2>この7日間</h2>
+    <div class="week" id="week"></div>
+    <p class="note" id="weekTotal"></p>
+  </section>
+
+  <section class="card">
+    <details>
+      <summary>設定</summary>
+      <div class="sets">
+        <div class="set"><label for="sFocus">集中（分）</label><input id="sFocus" type="number" min="1" max="120" inputmode="numeric"></div>
+        <div class="set"><label for="sShort">小休憩（分）</label><input id="sShort" type="number" min="1" max="60" inputmode="numeric"></div>
+        <div class="set"><label for="sLong">長い休憩（分）</label><input id="sLong" type="number" min="1" max="60" inputmode="numeric"></div>
+        <div class="set"><label for="sEvery">長い休憩までのセット数</label><input id="sEvery" type="number" min="2" max="10" inputmode="numeric"></div>
+        <div class="set"><label for="sGoal">1日の目標（分）</label><input id="sGoal" type="number" min="10" max="900" step="10" inputmode="numeric"></div>
+      </div>
+      <label class="toggle"><input type="checkbox" id="sAuto"> 次のタイマーを自動でスタート</label>
+      <label class="toggle"><input type="checkbox" id="sSound"> 終わったら音で知らせる</label>
+      <div class="row">
+        <button type="button" class="btn sm" id="notifyBtn">通知を許可する</button>
+        <button type="button" class="btn sm" id="clearToday">今日の記録を消す</button>
+      </div>
+      <p class="note">記録はこの端末のブラウザにだけ保存されます。途中で止めた集中時間も、進んだ分だけ記録されます。</p>
+    </details>
+  </section>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const KEY_SET = "pomo.settings.v1", KEY_LOG = "pomo.log.v1";
+  const DEF = { focus: 25, short: 5, long: 15, every: 4, goal: 120, auto: false, sound: true };
+  const LABEL = { focus: "集中しよう", short: "ひと休み", long: "しっかり休もう" };
+  const store = {
+    get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+  };
+  let S = { ...DEF, ...store.get(KEY_SET, {}) };
+  let log = store.get(KEY_LOG, {}); // { "YYYY-MM-DD": { sec: number, count: number } }
+
+  let mode = "focus", running = false, endAt = 0, remain = S.focus * 60, total = remain;
+  let done = 0;           // 長い休憩までに終えた集中セット数
+  let lastTick = 0;       // 集中時間を記録するための前回時刻
+  let timer = null;
+
+  const dayKey = (d = new Date()) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const fmt = s => { s = Math.max(0, Math.ceil(s)); return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; };
+  const fmtMin = sec => { const m = Math.floor(sec / 60); return m >= 60 ? `${Math.floor(m / 60)}時間${m % 60 ? (m % 60) + "分" : ""}` : `${m}分`; };
+
+  const C = 2 * Math.PI * 54, prog = $("prog");
+  prog.style.strokeDasharray = C;
+
+  function addStudy(sec) {
+    if (sec <= 0) return;
+    const k = dayKey(); const e = log[k] || { sec: 0, count: 0 };
+    e.sec += sec; log[k] = e; store.set(KEY_LOG, log);
+  }
+  function addCount() {
+    const k = dayKey(); const e = log[k] || { sec: 0, count: 0 };
+    e.count++; log[k] = e; store.set(KEY_LOG, log);
+  }
+  function flushStudy() {
+    if (mode !== "focus" || !running) return;
+    const now = Math.min(Date.now(), endAt);
+    addStudy((now - lastTick) / 1000); lastTick = now;
+  }
+
+  function setMode(m, keepStopped = true) {
+    mode = m; total = remain = S[m] * 60;
+    document.body.classList.toggle("is-break", m !== "focus");
+    document.querySelectorAll(".modes button").forEach(b => b.setAttribute("aria-pressed", b.dataset.mode === m));
+    $("phase").textContent = LABEL[m];
+    if (keepStopped) stop();
+    render();
+  }
+
+  function start() {
+    if (running) return;
+    running = true; endAt = Date.now() + remain * 1000; lastTick = Date.now();
+    $("start").textContent = "一時停止";
+    unlockAudio(); requestWake();
+    timer = setInterval(tick, 250); tick();
+  }
+  function stop() {
+    if (running) { flushStudy(); remain = Math.max(0, (endAt - Date.now()) / 1000); }
+    running = false; clearInterval(timer); timer = null;
+    $("start").textContent = remain < total ? "再開" : "スタート";
+    releaseWake(); renderStats(); render();
+  }
+  function tick() {
+    remain = (endAt - Date.now()) / 1000;
+    if (mode === "focus" && Date.now() - lastTick > 15000) { flushStudy(); renderStats(); }
+    if (remain <= 0) { remain = 0; finish(); return; }
+    render();
+  }
+  function finish() {
+    if (mode === "focus") {
+      const now = Date.now();
+      addStudy(Math.max(0, (Math.min(now, endAt) - lastTick) / 1000));
+      addCount(); done++;
+    }
+    running = false; clearInterval(timer); timer = null;
+    const prev = mode;
+    let next;
+    if (prev === "focus") next = done >= S.every ? "long" : "short";
+    else { next = "focus"; if (prev === "long") done = 0; }
+    alertDone(prev, next);
+    setMode(next, false);
+    $("start").textContent = "スタート";
+    renderStats();
+    if (S.auto) start(); else releaseWake();
+  }
+
+  function render() {
+    const t = fmt(remain);
+    $("time").textContent = t;
+    prog.style.strokeDashoffset = C * (1 - (total ? remain / total : 0));
+    document.title = running ? `${t} ${mode === "focus" ? "集中" : "休憩"} | ポモドーロ` : "ポモドーロ勉強タイマー";
+    const dots = $("dots"); dots.innerHTML = "";
+    for (let i = 0; i < S.every; i++) { const d = document.createElement("i"); if (i < done) d.className = "on"; dots.appendChild(d); }
+  }
+
+  function renderStats() {
+    const today = log[dayKey()] || { sec: 0, count: 0 };
+    $("todayTime").textContent = fmtMin(today.sec);
+    $("todayCount").textContent = `${today.count}回`;
+    const goal = S.goal * 60, pct = Math.min(100, today.sec / goal * 100);
+    $("goalBar").style.width = pct + "%";
+    const left = Math.ceil((goal - today.sec) / 60);
+    $("goalText").textContent = left > 0 ? `目標${fmtMin(goal)}まであと${fmtMin(left * 60)}` : `目標${fmtMin(goal)}達成！おつかれさま`;
+
+    const wk = $("week"); wk.innerHTML = ""; const days = [];
+    const W = ["日", "月", "火", "水", "木", "金", "土"];
+    for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); days.push(d); }
+    const vals = days.map(d => (log[dayKey(d)] || {}).sec || 0);
+    const max = Math.max(goal, ...vals);
+    days.forEach((d, i) => {
+      const col = document.createElement("div"); col.className = "col" + (i === 6 ? " today" : "");
+      const m = Math.floor(vals[i] / 60);
+      col.innerHTML = `<span class="v">${m ? m : ""}</span><div class="b" style="height:${Math.max(2, vals[i] / max * 85)}%"></div><small>${i === 6 ? "今日" : W[d.getDay()]}</small>`;
+      col.title = `${d.getMonth() + 1}/${d.getDate()} ${fmtMin(vals[i])}`;
+      wk.appendChild(col);
+    });
+    const sum = vals.reduce((a, b) => a + b, 0);
+    $("weekTotal").textContent = `7日間の合計 ${fmtMin(sum)}（1日平均 ${fmtMin(sum / 7)}）・棒の上の数字は分`;
+  }
+
+  // 音・通知・画面スリープ防止
+  let ac = null;
+  function unlockAudio() { try { ac = ac || new (window.AudioContext || window.webkitAudioContext)(); if (ac.state === "suspended") ac.resume(); } catch {} }
+  function beep() {
+    if (!S.sound || !ac) return;
+    [0, .35, .7].forEach((t, i) => {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = "sine"; o.frequency.value = i === 2 ? 1046 : 880;
+      g.gain.setValueAtTime(0, ac.currentTime + t);
+      g.gain.linearRampToValueAtTime(.25, ac.currentTime + t + .02);
+      g.gain.exponentialRampToValueAtTime(.001, ac.currentTime + t + .3);
+      o.connect(g).connect(ac.destination); o.start(ac.currentTime + t); o.stop(ac.currentTime + t + .32);
+    });
+  }
+  function alertDone(prev, next) {
+    const msg = prev === "focus" ? (next === "long" ? `${S.every}セット完了！長めに休もう` : "集中おつかれさま！ひと休みしよう") : "休憩おわり。また集中しよう";
+    beep(); toast(msg);
+    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+    if ("Notification" in window && Notification.permission === "granted" && document.hidden) {
+      try { new Notification("ポモドーロ勉強タイマー", { body: msg }); } catch {}
+    }
+  }
+  let wake = null;
+  async function requestWake() { try { if ("wakeLock" in navigator && !wake) { wake = await navigator.wakeLock.request("screen"); wake.addEventListener("release", () => wake = null); } } catch {} }
+  function releaseWake() { try { wake && wake.release(); } catch {} wake = null; }
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && running) { requestWake(); tick(); } });
+
+  let tt;
+  function toast(m) { const el = $("toast"); el.textContent = m; el.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => el.classList.remove("show"), 3500); }
+
+  // 操作
+  $("start").onclick = () => running ? stop() : start();
+  $("reset").onclick = () => { stop(); remain = total; $("start").textContent = "スタート"; render(); };
+  $("skip").onclick = () => {
+    if (mode === "focus" && running) flushStudy();
+    running = false; clearInterval(timer);
+    const next = mode === "focus" ? "short" : "focus";
+    setMode(next); toast(next === "focus" ? "集中にもどります" : "休憩にスキップしました");
+  };
+  document.querySelectorAll(".modes button").forEach(b => b.onclick = () => {
+    if (b.dataset.mode === mode) return;
+    setMode(b.dataset.mode);
+  });
+
+  // 設定
+  const F = { sFocus: "focus", sShort: "short", sLong: "long", sEvery: "every", sGoal: "goal" };
+  Object.entries(F).forEach(([id, k]) => {
+    const el = $(id); el.value = S[k];
+    el.onchange = () => {
+      const v = Math.round(Number(el.value));
+      const min = Number(el.min), max = Number(el.max);
+      if (!v || v < min || v > max) { el.value = S[k]; toast(`${min}〜${max}の数字を入れてね`); return; }
+      S[k] = v; store.set(KEY_SET, S);
+      if (k === mode && !running && remain === total) setMode(mode);
+      if (k === "every") done = Math.min(done, v);
+      render(); renderStats();
+    };
+  });
+  $("sAuto").checked = S.auto; $("sAuto").onchange = e => { S.auto = e.target.checked; store.set(KEY_SET, S); };
+  $("sSound").checked = S.sound; $("sSound").onchange = e => { S.sound = e.target.checked; store.set(KEY_SET, S); if (S.sound) { unlockAudio(); beep(); } };
+  const nb = $("notifyBtn");
+  if (!("Notification" in window)) nb.hidden = true;
+  else if (Notification.permission === "granted") { nb.textContent = "通知オン"; nb.disabled = true; }
+  nb.onclick = async () => { try { const p = await Notification.requestPermission(); if (p === "granted") { nb.textContent = "通知オン"; nb.disabled = true; toast("別のタブにいても終わったら通知します"); } } catch {} };
+  $("clearToday").onclick = () => {
+    if (!confirm("今日の勉強記録を0にしますか？")) return;
+    delete log[dayKey()]; store.set(KEY_LOG, log); renderStats(); toast("今日の記録を消しました");
+  };
+
+  // スペースキーでスタート/一時停止
+  document.addEventListener("keydown", e => {
+    if (e.code === "Space" && !/INPUT|BUTTON|SUMMARY/.test(document.activeElement.tagName)) { e.preventDefault(); $("start").click(); }
+  });
+  // 日付が変わったら記録表示を更新
+  setInterval(renderStats, 60000);
+  window.addEventListener("pagehide", flushStudy);
+
+  setMode("focus");
+  renderStats();
+})();
+</script>
+</body>
+</html>

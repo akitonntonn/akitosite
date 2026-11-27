@@ -66,6 +66,14 @@ const workCategories = [
         external: false,
       },
       {
+        title: "ポモドーロ勉強タイマー",
+        description: "25分集中して5分休むをくり返す勉強タイマー。今日の勉強時間と直近7日の記録が自動で残ります。",
+        tag: "Web / Tools",
+        url: "/pomodoro/",
+        buttonText: "使う",
+        external: false,
+      },
+      {
         title: "bar & card collection",
         description: "bar &の世界観をカードコレクションとして楽しめるWebコンテンツ。",
         tag: "Web / Tools",
