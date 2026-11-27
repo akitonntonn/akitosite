@@ -104,7 +104,7 @@ a{color:inherit}
 
 <header class="card hero">
   <div>
-    <h1>K-POP<br>カムバカレンダー</h1>
+    <h1>K-POP<br>カムバ<br>カレンダー</h1>
     <p class="lead">新曲・アルバムのリリース日を<b>毎日自動で更新</b>。推しを★しておくと、上にまとめて表示されます。</p>
     <p class="mute" id="upd">読み込み中…</p>
   </div>
@@ -217,6 +217,8 @@ const renderList=()=>{const L=filtered();let html="",mo="";
     if(m!==mo){html+=(mo?"</div>":"")+`<div class="month">${Number(m.slice(0,4))}年${Number(m.slice(5))}月</div><div class="list">`;mo=m}
     html+=itemHTML(it)}
   if(mo)html+="</div>";
+  if(F==="up"){const R=ITEMS.filter(it=>{const d=diff(it.date);return d<0&&d>=-30}).filter(it=>!Q.trim()||it.artist.toLowerCase().includes(Q.trim().toLowerCase())).reverse();
+    if(R.length)html+=`<div class="month">最近のリリース（30日以内）</div><div class="list">${R.map(itemHTML).join("")}</div>`}
   $("listV").innerHTML=html||`<p class="mute">${F==="fav"?"★を押すと、ここに推しのカムバが出ます。":"該当するカムバがありません。"}</p>`};
 
 const renderCal=()=>{if(!CM){const d=new Date();CM=new Date(d.getFullYear(),d.getMonth(),1)}
@@ -231,6 +233,8 @@ const renderCal=()=>{if(!CM){const d=new Date();CM=new Date(d.getFullYear(),d.ge
   $("cal").innerHTML=h};
 
 const renderNext=()=>{const up=ITEMS.filter(it=>isFav(it.artist)&&diff(it.date)>=0);
+  if(!up.length&&favs().length){const last=ITEMS.filter(it=>isFav(it.artist)&&diff(it.date)<0).slice(-1)[0];
+    $("next").innerHTML=`<div class="cd"><b>★</b><span>待機中</span></div><div><b>推しの次のカムバはまだ発表されていません。</b><p class="mute">推し：${esc(favs().join("、"))}</p>${last?`<p class="mute">最近のリリース：${esc(last.artist)}『${esc(last.title)}』${md(last.date)}</p>`:""}</div>`;return}
   if(!up.length){$("next").innerHTML=`<div class="cd"><b>★</b><span>推し登録</span></div><div><b>推しを★すると、次のカムバまでのカウントダウンが出ます。</b><p class="mute">下の一覧の☆ボタンから登録できます（この端末に保存）。</p></div>`;return}
   const it=up[0],d=diff(it.date);
   $("next").innerHTML=`<div class="cd">${d===0?"<b>今日</b><span>リリース！</span>":`<span>あと</span><b>${d}</b><span>日</span>`}</div>
@@ -254,11 +258,12 @@ const drawCard=async()=>{const SC=ShareCard,W=weekItems(),ink="#1b1530",mute="#6
   x.fillStyle=ink;x.font='400 50px "Dela Gothic One"';x.textAlign="left";x.fillText(title,84,128);
   const tw=x.measureText(title).width;SC.pill(x,range,84+tw+20,86,'900 26px "Zen Kaku Gothic New"',"#e9408f","#fff",ink);
   if(!rows.length){x.fillStyle=mute;x.font='700 30px "Zen Kaku Gothic New"';x.fillText("今週のリリース予定はまだありません",84,300)}
-  rows.forEach((it,i)=>{const Y=176+i*56,f=isFav(it.artist);
-    if(f){SC.rr(x,72,Y-6,1036,50,12);x.fillStyle="#fff0c2";x.fill()}
-    x.fillStyle="#b81e68";x.font='900 26px "Zen Kaku Gothic New"';x.fillText(md(it.date),88,Y+29);
-    x.fillStyle=ink;const s=SC.fit(x,it.artist,'900 {s}px "Zen Kaku Gothic New"',28,300,18);x.fillText(it.artist,250,Y+29);
-    x.fillStyle=mute;x.font='700 24px "Zen Kaku Gothic New"';SC.wrap(x,"『"+it.title+"』",570,Y+29,520,30,1)});
+  const big=rows.length<=3,RH=big?92:56,FS=big?36:26;
+  rows.forEach((it,i)=>{const Y=176+i*RH,f=isFav(it.artist),base=Y+(big?50:29);
+    if(f){SC.rr(x,72,Y-6,1036,RH-6,12);x.fillStyle="#fff0c2";x.fill()}
+    x.fillStyle="#b81e68";x.font=`900 ${FS}px "Zen Kaku Gothic New"`;x.fillText(md(it.date),88,base);
+    x.fillStyle=ink;SC.fit(x,it.artist,'900 {s}px "Zen Kaku Gothic New"',FS+2,big?330:300,18);x.fillText(it.artist,big?300:250,base);
+    x.fillStyle=mute;x.font=`700 ${FS-2}px "Zen Kaku Gothic New"`;SC.wrap(x,"『"+it.title+"』",big?650:570,base,big?440:520,30,1)});
   if(W.length>6){x.fillStyle=mute;x.font='700 22px "Zen Kaku Gothic New"';x.textAlign="right";x.fillText(`ほか${W.length-6}件`,1100,520);x.textAlign="left"}
   x.fillStyle="#e8d0ea";x.fillRect(84,530,1016,2);
   x.font='700 21px "Zen Kaku Gothic New"';x.fillStyle=mute;x.fillText(SITE,84,566);
