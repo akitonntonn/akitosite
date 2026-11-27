@@ -1,0 +1,39 @@
+# K-POPカムバカレンダーのデータを毎日自動更新する
+name: kpop-comeback data
+
+on:
+  schedule:
+    - cron: "0 21 * * *"   # 毎日 朝6:00（日本時間）
+  workflow_dispatch: {}     # Actionsタブから手動実行もできる
+  push:
+    paths:                  # グループ一覧・手動追加ファイルを編集したらすぐ反映
+      - kpop-comeback/artists.json
+      - kpop-comeback/manual.json
+      - scripts/update-kpop-comeback.mjs
+      - .github/workflows/kpop-comeback.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: kpop-comeback-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/update-kpop-comeback.mjs
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- kpop-comeback/; then echo "no changes"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898332+github-actions[bot]@users.noreply.github.com"
+          git add kpop-comeback/data.json kpop-comeback/artists.json
+          git commit -m "カムバカレンダーのデータを自動更新"
+          git push

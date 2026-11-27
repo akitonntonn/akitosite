@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>K-POPカムバカレンダー｜新曲・アルバムのリリース日が毎日自動で更新【無料】</title>
+<meta name="description" content="K-POPのカムバック（新曲・アルバム）のリリース日をカレンダーで確認できます。データは毎日自動で更新。推しを★登録して、カムバまでのカウントダウンやXでのシェアもできます。">
+<meta property="og:title" content="K-POPカムバカレンダー｜次のカムバはいつ？">
+<meta property="og:description" content="K-POPの新曲・アルバムのリリース日を毎日自動更新。推しのカムバまであと何日？">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://akitosite.pages.dev/kpop-comeback/">
+<meta property="og:image" content="https://akitosite.pages.dev/kpop-comeback/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AKITO SAKAI | Creative Hub">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://akitosite.pages.dev/kpop-comeback/">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "K-POPカムバカレンダー", "url": "https://akitosite.pages.dev/kpop-comeback/", "description": "K-POPのカムバック（新曲・アルバム）のリリース日を毎日自動更新するカレンダー。", "applicationCategory": "EntertainmentApplication", "operatingSystem": "Web", "inLanguage": "ja", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "JPY"}, "image": "https://akitosite.pages.dev/kpop-comeback/og.png"}</script>
+<meta name="theme-color" content="#e9408f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='10' y='18' width='80' height='74' rx='12' fill='%23fffafd' stroke='%231b1530' stroke-width='6'/%3E%3Cpath d='M10 30a12 12 0 0 1 12-12h56a12 12 0 0 1 12 12v12H10z' fill='%23e9408f' stroke='%231b1530' stroke-width='6'/%3E%3Cpath d='M50 80 36 66a8 8 0 0 1 14-10 8 8 0 0 1 14 10z' fill='%23e9408f'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap">
+<style>
+/* VOICE: 推し活仲間に話すような、明るく短い言葉
+   IDEA: ライブ会場のペンライト × 卓上カレンダー
+   PICTURE: 自作SVGのカレンダーとペンライト。写真・ロゴ・ジャケット画像は使わない
+   COLOUR and TYPE: K-POP診断と共通（夜のステージの紫紺、ペンライトのピンク / Dela Gothic One + Zen Kaku Gothic New）
+   LAYOUT: 1カラム、スマホ優先。ヘッダー→今週のカムバ→絞り込み→月ごとのリスト／月カレンダー */
+:root{color-scheme:light dark;
+--bg:light-dark(#f4e6f4,#17122a);--bg2:light-dark(#e8d0ea,#251d40);--card:light-dark(#fffafd,#221a3a);
+--ink:light-dark(#1b1530,#f5ecfa);--mute:light-dark(#62557a,#bcaed0);--line:light-dark(#1b1530,#f5ecfa);
+--ball:#e9408f;--ballD:light-dark(#b81e68,#ff7ab8);--fav:light-dark(#fff0c2,#3b2f12)}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "Zen Kaku Gothic New",system-ui,sans-serif;overflow-x:clip;
+background-image:radial-gradient(circle at 1px 1px,color-mix(in srgb,var(--ink) 16%,transparent) 1.2px,transparent 1.6px);background-size:22px 22px;min-height:100vh}
+.wrap{max-width:680px;margin:0 auto;padding:20px 16px 48px}
+h1,h2,.disp{font-family:"Dela Gothic One","Zen Kaku Gothic New",sans-serif;font-weight:400;line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,8vw,44px)}
+h2{font-size:clamp(21px,5.4vw,27px)}
+p{margin:.5em 0}
+a{color:inherit}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:20px;box-shadow:6px 6px 0 var(--line)}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 128px;gap:12px;align-items:center}
+.hero svg{width:128px;height:auto}
+.lead{font-size:16px}
+.mute{color:var(--mute);font-size:14px}
+.top-link{display:inline-block;font-weight:700;font-size:14px;color:var(--mute);text-decoration:none;margin-bottom:10px}
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:10px 20px;border-radius:999px;border:2px solid var(--line);background:var(--ball);color:#fff;font:900 16px "Zen Kaku Gothic New",sans-serif;cursor:pointer;box-shadow:3px 3px 0 var(--line);text-decoration:none}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--line)}
+.btn.sub{background:var(--card);color:var(--ink)}
+.btn.sm{min-height:40px;padding:6px 14px;font-size:14px;box-shadow:2px 2px 0 var(--line)}
+.btn:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--ball);outline-offset:3px}
+.row{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+.sec{margin-top:26px}
+.sec>h2{margin-bottom:10px}
+.next{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center}
+.cd{display:grid;place-items:center;min-width:92px;padding:10px 8px;border:2px solid var(--line);border-radius:14px;background:var(--ball);color:#fff;text-align:center;line-height:1.1}
+.cd b{font:400 34px "Dela Gothic One",sans-serif}
+.cd span{font-size:12px;font-weight:900}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.chips button{appearance:none;min-height:40px;padding:6px 14px;border:2px solid var(--line);border-radius:99px;background:var(--card);color:var(--ink);font:700 14px "Zen Kaku Gothic New",sans-serif;cursor:pointer}
+.chips button.on{background:var(--ink);color:var(--card)}
+.search{width:100%;min-height:46px;padding:8px 14px;border:2px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);font:700 16px "Zen Kaku Gothic New",sans-serif}
+.month{margin:22px 0 8px;font:400 20px "Dela Gothic One",sans-serif}
+.list{display:grid;gap:10px}
+.it{display:grid;grid-template-columns:62px minmax(0,1fr) auto;gap:12px;align-items:start;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px;box-shadow:3px 3px 0 var(--line)}
+.it.fav{background:var(--fav)}
+.it.past{opacity:.72}
+.dt{display:grid;place-items:center;border:2px solid var(--line);border-radius:10px;overflow:hidden;text-align:center;line-height:1.1;background:var(--card)}
+.dt i{display:block;width:100%;font-style:normal;font-size:11px;font-weight:900;background:var(--ink);color:var(--card);padding:2px 0}
+.dt b{font:400 24px "Dela Gothic One",sans-serif;padding:4px 0 0}
+.dt span{font-size:11px;font-weight:700;padding:0 0 4px}
+.ar{font-weight:900;font-size:17px;line-height:1.3;overflow-wrap:anywhere}
+.ti{font-size:15px;line-height:1.45;overflow-wrap:anywhere}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;align-items:center}
+.tag{font-size:12px;font-weight:900;padding:1px 10px;border-radius:99px;background:var(--bg2)}
+.tag.cd2{background:var(--ball);color:#fff}
+.tag.today{background:#ffd23f;color:#1b1530}
+.acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.acts a,.acts button{appearance:none;font:700 13px "Zen Kaku Gothic New",sans-serif;min-height:34px;padding:4px 12px;border:2px solid var(--line);border-radius:99px;background:var(--card);color:var(--ink);text-decoration:none;cursor:pointer;display:inline-flex;align-items:center}
+.star{appearance:none;width:44px;height:44px;border:2px solid var(--line);border-radius:50%;background:var(--card);color:var(--ink);font-size:20px;cursor:pointer;line-height:1}
+.star.on{background:#ffd23f;color:#1b1530}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px}
+.cal .h{text-align:center;font-size:12px;font-weight:900;color:var(--mute)}
+.cal .d{min-height:74px;border:2px solid color-mix(in srgb,var(--line) 30%,transparent);border-radius:8px;padding:3px;background:var(--card);font-size:11px;line-height:1.25;overflow:hidden}
+.cal .d.x{background:transparent;border-color:transparent}
+.cal .d.now{border-color:var(--ball)}
+.cal .d>b{display:block;font-size:12px}
+.cal .e{display:block;margin-top:2px;padding:1px 3px;border-radius:4px;background:var(--bg2);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cal .e.f{background:var(--ball);color:#fff}
+.calnav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.shot{display:block;width:100%;height:auto;aspect-ratio:1200/630;margin-top:12px;border:2px solid var(--line);border-radius:12px;background:var(--bg2)}
+.toast{min-height:1.5em;font-size:14px;font-weight:700;color:var(--ballD)}
+.hide{display:none!important}
+.foot{margin-top:32px;font-size:13px;color:var(--mute);line-height:1.7}
+.foot h3{font-size:15px;color:var(--ink);margin:0 0 4px}
+@media(max-width:440px){.hero{grid-template-columns:minmax(0,1fr) 84px}.hero svg{width:84px}.it{grid-template-columns:54px minmax(0,1fr) auto;gap:10px;padding:10px}.card{padding:16px}.cal .d{min-height:58px;font-size:10px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="top-link" href="/">← AKITO SAKAI | Creative Hub</a>
+
+<header class="card hero">
+  <div>
+    <h1>K-POP<br>カムバカレンダー</h1>
+    <p class="lead">新曲・アルバムのリリース日を<b>毎日自動で更新</b>。推しを★しておくと、上にまとめて表示されます。</p>
+    <p class="mute" id="upd">読み込み中…</p>
+  </div>
+  <svg viewBox="0 0 130 130" aria-hidden="true">
+    <g stroke="#1b1530" stroke-width="4">
+      <rect x="10" y="22" width="92" height="88" rx="12" fill="#fffafd"/>
+      <path d="M10 36a14 14 0 0 1 14-14h64a14 14 0 0 1 14 14v12H10z" fill="#e9408f"/>
+      <line x1="34" y1="12" x2="34" y2="30" stroke-linecap="round"/><line x1="78" y1="12" x2="78" y2="30" stroke-linecap="round"/>
+      <g stroke-width="0" fill="#1b1530" opacity=".25"><rect x="22" y="58" width="14" height="12" rx="3"/><rect x="44" y="58" width="14" height="12" rx="3"/><rect x="22" y="80" width="14" height="12" rx="3"/><rect x="44" y="80" width="14" height="12" rx="3"/></g>
+      <rect x="66" y="58" width="14" height="12" rx="3" fill="#e9408f" stroke-width="2.5"/>
+      <g transform="translate(100 92) rotate(18)">
+        <rect x="-6" y="10" width="12" height="38" rx="5" fill="#1b1530"/>
+        <circle r="24" fill="#8a5cf6"/>
+        <path d="M0 12-12 0a7 7 0 0 1 12-9 7 7 0 0 1 12 9z" fill="#fff" stroke-width="2"/>
+      </g>
+    </g>
+  </svg>
+</header>
+
+<section class="sec" id="nextSec">
+  <h2>推しの次のカムバ</h2>
+  <div class="card next" id="next"></div>
+</section>
+
+<section class="sec">
+  <h2>今週のカムバ</h2>
+  <div class="card">
+    <p id="weekTxt" class="mute"></p>
+    <img class="shot" id="shot" alt="今週のカムバをまとめた画像">
+    <div class="row">
+      <button class="btn" id="imgshare">画像つきでシェア</button>
+      <a class="btn sub" id="weekX" target="_blank" rel="noopener">Xでポスト</a>
+    </div>
+    <p class="toast" id="toast" role="status"></p>
+  </div>
+</section>
+
+<section class="sec">
+  <h2>カムバ一覧</h2>
+  <input class="search" id="q" type="search" placeholder="グループ名で探す（例：NCT）" aria-label="グループ名で探す">
+  <div class="chips" id="filt" role="group" aria-label="絞り込み">
+    <button data-f="up" class="on">これから</button><button data-f="fav">★推しだけ</button><button data-f="past">最近リリース</button><button data-f="all">すべて</button>
+  </div>
+  <div class="chips" id="view" role="group" aria-label="表示">
+    <button data-v="list" class="on">リスト</button><button data-v="cal">月カレンダー</button>
+  </div>
+  <div id="listV"></div>
+  <div id="calV" class="hide card">
+    <div class="calnav"><button class="btn sub sm" id="pm" aria-label="前の月">←</button><b class="disp" id="cm"></b><button class="btn sub sm" id="nm" aria-label="次の月">→</button></div>
+    <div class="cal" id="cal"></div>
+  </div>
+</section>
+
+<footer class="foot">
+  <h3>データについて</h3>
+  <p>リリース情報は、誰でも編集できる音楽データベース <a href="https://musicbrainz.org/" target="_blank" rel="noopener">MusicBrainz</a>（CC0）から毎日1回自動で集めています。発表されたばかりのカムバは載るまで時間がかかることがあり、日付が変わることもあります。最新の情報は各事務所・公式SNSで確認してください。</p>
+  <p>ジャケット写真・ロゴ・歌詞は使っていません。「聴く」ボタンはYouTube／Spotifyの検索結果を開きます。</p>
+  <p>非公式のファンメイドページです。</p>
+</footer>
+</div>
+
+<script src="/assets/share-card.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const SITE="akitosite.pages.dev/kpop-comeback",URL0="https://"+SITE+"/",TAG="#KPOPカムバカレンダー";
+const WD="日月火水木金土";
+const TYPE={Album:"フルアルバム",EP:"ミニアルバム",Single:"シングル",Comeback:"カムバ",Other:"リリース"};
+const pad=n=>String(n).padStart(2,"0");
+const ymd=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const pd=s=>{const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d)};
+const today=ymd(new Date());
+const diff=s=>Math.round((pd(s)-pd(today))/864e5);
+const md=s=>{const d=pd(s);return (d.getMonth()+1)+"/"+d.getDate()+"("+WD[d.getDay()]+")"};
+
+let ITEMS=[],FAV0=[],F="up",V="list",Q="",CM=null;
+const LS="kpopcb-favs";
+const favs=()=>{try{const v=JSON.parse(localStorage.getItem(LS));if(Array.isArray(v))return v}catch(e){}return FAV0};
+const setFavs=a=>{try{localStorage.setItem(LS,JSON.stringify(a))}catch(e){}};
+const isFav=n=>favs().includes(n);
+
+const cdTag=s=>{const d=diff(s);return d===0?'<span class="tag today">今日リリース！</span>':d>0?`<span class="tag cd2">あと${d}日</span>`:`<span class="tag">リリース済み</span>`};
+const postText=it=>{const d=diff(it.date);
+  const head=d===0?"今日リリース！":d>0?`あと${d}日！`:"リリースされました";
+  return `【K-POPカムバ】${it.artist}『${it.title}』${md(it.date)} ${head}\n${TAG}`};
+const xUrl=t=>"https://x.com/intent/post?text="+encodeURIComponent(t)+"&url="+encodeURIComponent(URL0);
+const gcal=it=>{const d=it.date.replace(/-/g,""),n=ymd(new Date(pd(it.date).getTime()+864e5)).replace(/-/g,"");
+  return "https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(`${it.artist}『${it.title}』リリース`)+"&dates="+d+"/"+n+"&details="+encodeURIComponent("K-POPカムバカレンダー "+URL0)};
+
+const itemHTML=it=>{const d=pd(it.date),f=isFav(it.artist),past=diff(it.date)<0,qs=encodeURIComponent(it.artist+" "+it.title);
+  return `<article class="it${f?" fav":""}${past?" past":""}">
+   <div class="dt"><i>${d.getMonth()+1}月</i><b>${d.getDate()}</b><span>${WD[d.getDay()]}曜</span></div>
+   <div><div class="ar">${esc(it.artist)}</div><div class="ti">『${esc(it.title)}』</div>
+    <div class="meta">${cdTag(it.date)}<span class="tag">${esc(TYPE[it.type]||it.type)}</span>${it.note?`<span class="tag">${esc(it.note)}</span>`:""}</div>
+    <div class="acts"><a href="${xUrl(postText(it))}" target="_blank" rel="noopener">Xでポスト</a>${past||diff(it.date)===0?`<a href="https://www.youtube.com/results?search_query=${qs}" target="_blank" rel="noopener">YouTubeで聴く</a><a href="https://open.spotify.com/search/${qs}" target="_blank" rel="noopener">Spotifyで聴く</a>`:`<a href="${gcal(it)}" target="_blank" rel="noopener">カレンダーに追加</a>`}</div></div>
+   <button class="star${f?" on":""}" data-a="${esc(it.artist)}" aria-pressed="${f}" aria-label="${esc(it.artist)}を推しに${f?"登録済み":"登録"}">${f?"★":"☆"}</button>
+  </article>`};
+
+const filtered=()=>{const q=Q.trim().toLowerCase();
+  let L=ITEMS.filter(it=>!q||it.artist.toLowerCase().includes(q)||it.title.toLowerCase().includes(q));
+  if(F==="up")L=L.filter(it=>diff(it.date)>=0);
+  if(F==="past")L=L.filter(it=>diff(it.date)<0).reverse();
+  if(F==="fav")L=L.filter(it=>isFav(it.artist));
+  return L};
+
+const renderList=()=>{const L=filtered();let html="",mo="";
+  if(F!=="past"&&F!=="fav"){const fv=L.filter(it=>isFav(it.artist)&&diff(it.date)>=0);
+    if(fv.length&&F==="up")html+=`<div class="month">★ 推しのカムバ</div><div class="list">${fv.map(itemHTML).join("")}</div>`}
+  for(const it of L){const m=it.date.slice(0,7);
+    if(m!==mo){html+=(mo?"</div>":"")+`<div class="month">${Number(m.slice(0,4))}年${Number(m.slice(5))}月</div><div class="list">`;mo=m}
+    html+=itemHTML(it)}
+  if(mo)html+="</div>";
+  $("listV").innerHTML=html||`<p class="mute">${F==="fav"?"★を押すと、ここに推しのカムバが出ます。":"該当するカムバがありません。"}</p>`};
+
+const renderCal=()=>{if(!CM){const d=new Date();CM=new Date(d.getFullYear(),d.getMonth(),1)}
+  const y=CM.getFullYear(),m=CM.getMonth(),first=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate();
+  $("cm").textContent=`${y}年${m+1}月`;
+  const q=Q.trim().toLowerCase();
+  const L=ITEMS.filter(it=>(!q||it.artist.toLowerCase().includes(q))&&(F!=="fav"||isFav(it.artist)));
+  let h=[..."日月火水木金土"].map(w=>`<div class="h">${w}</div>`).join("");
+  for(let i=0;i<first;i++)h+='<div class="d x"></div>';
+  for(let d=1;d<=n;d++){const s=y+"-"+pad(m+1)+"-"+pad(d),es=L.filter(it=>it.date===s);
+    h+=`<div class="d${s===today?" now":""}"><b>${d}</b>${es.map(it=>`<span class="e${isFav(it.artist)?" f":""}" title="${esc(it.artist+"『"+it.title+"』")}">${esc(it.artist)}</span>`).join("")}</div>`}
+  $("cal").innerHTML=h};
+
+const renderNext=()=>{const up=ITEMS.filter(it=>isFav(it.artist)&&diff(it.date)>=0);
+  if(!up.length){$("next").innerHTML=`<div class="cd"><b>★</b><span>推し登録</span></div><div><b>推しを★すると、次のカムバまでのカウントダウンが出ます。</b><p class="mute">下の一覧の☆ボタンから登録できます（この端末に保存）。</p></div>`;return}
+  const it=up[0],d=diff(it.date);
+  $("next").innerHTML=`<div class="cd">${d===0?"<b>今日</b><span>リリース！</span>":`<span>あと</span><b>${d}</b><span>日</span>`}</div>
+   <div><div class="ar">${esc(it.artist)}</div><div class="ti">『${esc(it.title)}』${md(it.date)}</div>
+   <div class="acts"><a href="${xUrl(postText(it))}" target="_blank" rel="noopener">Xでポスト</a><a href="${gcal(it)}" target="_blank" rel="noopener">カレンダーに追加</a></div></div>`};
+
+// 今週（今日から7日間）のカムバ
+const weekItems=()=>ITEMS.filter(it=>{const d=diff(it.date);return d>=0&&d<7}).sort((a,b)=>a.date.localeCompare(b.date)||(isFav(b.artist)-isFav(a.artist)));
+const weekRange=()=>{const a=new Date(),b=new Date(Date.now()+6*864e5);return `${a.getMonth()+1}/${a.getDate()}〜${b.getMonth()+1}/${b.getDate()}`};
+const weekText=()=>{const W=weekItems();
+  return `今週のK-POPカムバ（${weekRange()}）\n`+(W.length?W.slice(0,6).map(it=>`・${md(it.date)} ${it.artist}『${it.title}』`).join("\n")+(W.length>6?`\nほか${W.length-6}件`:""):"今週のリリース予定はまだありません")+`\n${TAG}`};
+
+const drawCard=async()=>{const SC=ShareCard,W=weekItems(),ink="#1b1530",mute="#62557a";
+  const rows=W.slice(0,6),title="今週のK-POPカムバ",range=weekRange();
+  const all=title+range+rows.map(it=>md(it.date)+it.artist+it.title).join("")+SITE+TAG+"…ほか件今週のリリース予定はまだありません";
+  await SC.fonts([['400 52px "Dela Gothic One"',title+range],['900 30px "Zen Kaku Gothic New"',all],['700 30px "Zen Kaku Gothic New"',all]]);
+  const [c,x]=SC.make();
+  x.fillStyle="#f4e6f4";x.fillRect(0,0,1200,630);
+  x.fillStyle="rgba(27,21,48,.16)";for(let i=11;i<1200;i+=22)for(let j=11;j<630;j+=22){x.beginPath();x.arc(i,j,1.6,0,Math.PI*2);x.fill()}
+  SC.panel(x,"#fffafd",ink);
+  x.fillStyle=ink;x.font='400 50px "Dela Gothic One"';x.textAlign="left";x.fillText(title,84,128);
+  const tw=x.measureText(title).width;SC.pill(x,range,84+tw+20,86,'900 26px "Zen Kaku Gothic New"',"#e9408f","#fff",ink);
+  if(!rows.length){x.fillStyle=mute;x.font='700 30px "Zen Kaku Gothic New"';x.fillText("今週のリリース予定はまだありません",84,300)}
+  rows.forEach((it,i)=>{const Y=176+i*56,f=isFav(it.artist);
+    if(f){SC.rr(x,72,Y-6,1036,50,12);x.fillStyle="#fff0c2";x.fill()}
+    x.fillStyle="#b81e68";x.font='900 26px "Zen Kaku Gothic New"';x.fillText(md(it.date),88,Y+29);
+    x.fillStyle=ink;const s=SC.fit(x,it.artist,'900 {s}px "Zen Kaku Gothic New"',28,300,18);x.fillText(it.artist,250,Y+29);
+    x.fillStyle=mute;x.font='700 24px "Zen Kaku Gothic New"';SC.wrap(x,"『"+it.title+"』",570,Y+29,520,30,1)});
+  if(W.length>6){x.fillStyle=mute;x.font='700 22px "Zen Kaku Gothic New"';x.textAlign="right";x.fillText(`ほか${W.length-6}件`,1100,520);x.textAlign="left"}
+  x.fillStyle="#e8d0ea";x.fillRect(84,530,1016,2);
+  x.font='700 21px "Zen Kaku Gothic New"';x.fillStyle=mute;x.fillText(SITE,84,566);
+  x.textAlign="right";x.fillStyle="#b81e68";x.font='900 22px "Zen Kaku Gothic New"';x.fillText(TAG,1100,566);
+  return c};
+let cardC=null;
+const canFile=(()=>{try{return !!(navigator.canShare&&navigator.canShare({files:[new File([""],"a.png",{type:"image/png"})]}))}catch(e){return false}})();
+$("imgshare").textContent=canFile?"画像つきでシェア":"画像を保存";
+$("imgshare").onclick=async()=>{if(!cardC)return;const r=await ShareCard.share(cardC,"kpop-comeback-"+today+".png",weekText()+"\n"+URL0);
+  if(r==="saved")$("toast").textContent="画像を保存しました。「Xでポスト」を押して、投稿に画像を添付してください。"};
+const renderWeek=async()=>{const W=weekItems();
+  $("weekTxt").textContent=W.length?`${weekRange()}は${W.length}件のリリース予定があります。`:"今週のリリース予定はまだありません。";
+  $("weekX").href="https://x.com/intent/post?text="+encodeURIComponent(weekText())+"&url="+encodeURIComponent(URL0);
+  cardC=await drawCard();$("shot").src=cardC.toDataURL("image/png")};
+
+const render=()=>{renderNext();V==="list"?renderList():renderCal();
+  $("listV").classList.toggle("hide",V!=="list");$("calV").classList.toggle("hide",V!=="cal")};
+
+document.addEventListener("click",e=>{const b=e.target.closest(".star");if(!b)return;
+  const a=b.dataset.a,f=favs();setFavs(f.includes(a)?f.filter(x=>x!==a):[...f,a]);render();renderWeek()});
+$("filt").onclick=e=>{const b=e.target.closest("button");if(!b)return;F=b.dataset.f;[...$("filt").children].forEach(x=>x.classList.toggle("on",x===b));render()};
+$("view").onclick=e=>{const b=e.target.closest("button");if(!b)return;V=b.dataset.v;[...$("view").children].forEach(x=>x.classList.toggle("on",x===b));render()};
+$("q").oninput=e=>{Q=e.target.value;render()};
+$("pm").onclick=()=>{CM=new Date(CM.getFullYear(),CM.getMonth()-1,1);renderCal()};
+$("nm").onclick=()=>{CM=new Date(CM.getFullYear(),CM.getMonth()+1,1);renderCal()};
+
+(async()=>{try{
+  const [d,a]=await Promise.all([fetch("data.json",{cache:"no-cache"}).then(r=>r.json()),fetch("artists.json",{cache:"no-cache"}).then(r=>r.json()).catch(()=>[])]);
+  ITEMS=d.items||[];FAV0=a.filter(x=>x.fav).map(x=>x.name);
+  const u=d.updated?new Date(d.updated):null;
+  $("upd").textContent=`${ITEMS.filter(it=>diff(it.date)>=0).length}件の予定`+(u?`・最終更新 ${u.getMonth()+1}/${u.getDate()} ${pad(u.getHours())}:${pad(u.getMinutes())}`:"");
+  render();renderWeek();
+}catch(e){$("upd").textContent="データを読み込めませんでした。時間をおいて再読み込みしてください。"}})();
+</script>
+</body>
+</html>

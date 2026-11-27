@@ -66,6 +66,14 @@ const workCategories = [
         external: false,
       },
       {
+        title: "K-POPカムバカレンダー",
+        description: "K-POPの新曲・アルバムのリリース日を毎日自動で更新。推しを★して、カムバまでのカウントダウンやXでのシェアもできます。",
+        tag: "Web / Tools",
+        url: "/kpop-comeback/",
+        buttonText: "見る",
+        external: false,
+      },
+      {
         title: "ポモドーロ勉強タイマー",
         description: "25分集中して5分休むをくり返す勉強タイマー。今日の勉強時間と直近7日の記録が自動で残ります。",
         tag: "Web / Tools",
