@@ -103,7 +103,9 @@ items.sort((a, b) => srcRank[a.src] - srcRank[b.src]);
 for (const it of items) {
   const k = it.date + "|" + norm(it.artist) + "|" + norm(it.title);
   const k2 = it.date + "|" + norm(it.artist);
-  if (seen.has(k)) { const o = seen.get(k); if (o.type === "Other" && it.type !== "Other") o.type = it.type; continue; }
+  // 同じグループ・同じタイトルで日付が2日以内のずれ（時差など）なら同じ作品とみなす
+  const dup = seen.get(k) || [...seen.values()].find(o => norm(o.artist) === norm(it.artist) && norm(o.title) === norm(it.title) && Math.abs(Date.parse(o.date) - Date.parse(it.date)) <= 2 * 864e5);
+  if (dup) { if (dup.type === "Other" && it.type !== "Other") dup.type = it.type; continue; }
   // 手動で入れた日・グループと同じものは手動を優先
   if (it.src !== "manual" && [...seen.values()].some(o => o.src === "manual" && o.date + "|" + norm(o.artist) === k2)) continue;
   seen.set(k, it);
