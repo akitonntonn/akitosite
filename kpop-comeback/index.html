@@ -107,6 +107,7 @@ a{color:inherit}
     <h1>K-POP<br>カムバ<br>カレンダー</h1>
     <p class="lead">新曲・アルバムのリリース日を<b>毎日自動で更新</b>。推しを★しておくと、上にまとめて表示されます。</p>
     <p class="mute" id="upd">読み込み中…</p>
+    <p class="mute" style="margin:0"><a href="/kpop-shindan/">どのグループを推すか迷ったら → おすすめK-POP診断</a></p>
   </div>
   <svg viewBox="0 0 130 130" aria-hidden="true">
     <g stroke="#1b1530" stroke-width="4">
@@ -163,6 +164,7 @@ a{color:inherit}
   <p>リリース情報は、Wikipedia英語版の「<a href="https://en.wikipedia.org/wiki/2026_in_South_Korean_music" target="_blank" rel="noopener">韓国音楽のリリース一覧</a>」と、音楽データベース <a href="https://musicbrainz.org/" target="_blank" rel="noopener">MusicBrainz</a> から毎日1回自動で集めています（日付・名前・タイトルのみ）。発表されたばかりのカムバは載るまで時間がかかることがあり、日付が変わることもあります。最新の情報は各事務所・公式SNSで確認してください。</p>
   <p>ジャケット写真・ロゴ・歌詞は使っていません。「聴く」ボタンはYouTube／Spotifyの検索結果を開きます。</p>
   <p>非公式のファンメイドページです。</p>
+  <p>K-POPをもっと知りたい人は <a href="/kpop-shindan/">おすすめK-POP診断</a> もどうぞ。10問であなたにぴったりのアーティストがわかります。</p>
 </footer>
 </div>
 
@@ -219,7 +221,7 @@ const renderList=()=>{const L=filtered();let html="",mo="";
   if(mo)html+="</div>";
   if(F==="up"){const R=ITEMS.filter(it=>{const d=diff(it.date);return d<0&&d>=-30}).filter(it=>!Q.trim()||it.artist.toLowerCase().includes(Q.trim().toLowerCase())).reverse();
     if(R.length)html+=`<div class="month">最近のリリース（30日以内）</div><div class="list">${R.map(itemHTML).join("")}</div>`}
-  $("listV").innerHTML=html||`<p class="mute">${F==="fav"?"★を押すと、ここに推しのカムバが出ます。":"該当するカムバがありません。"}</p>`};
+  $("listV").innerHTML=html||`<p class="mute">${F==="fav"?"★を押すと、ここに推しのカムバが出ます。":(Q.trim()?`「${esc(Q.trim())}」の発表済みのカムバ・最近のリリースはまだありません。発表されたら毎朝の自動更新で載ります。`:"該当するカムバがありません。")}</p>`};
 
 const renderCal=()=>{if(!CM){const d=new Date();CM=new Date(d.getFullYear(),d.getMonth(),1)}
   const y=CM.getFullYear(),m=CM.getMonth(),first=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate();
@@ -292,10 +294,12 @@ $("nm").onclick=()=>{CM=new Date(CM.getFullYear(),CM.getMonth()+1,1);renderCal()
 
 (async()=>{try{
   const [d,a]=await Promise.all([fetch("data.json",{cache:"no-cache"}).then(r=>r.json()),fetch("artists.json",{cache:"no-cache"}).then(r=>r.json()).catch(()=>[])]);
+  const q0=new URLSearchParams(location.search).get("q");if(q0){Q=q0;$("q").value=q0;F="all";[...$("filt").children].forEach(x=>x.classList.toggle("on",x.dataset.f==="all"))}
   ITEMS=d.items||[];FAV0=a.filter(x=>x.fav).map(x=>x.name);
   const u=d.updated?new Date(d.updated):null;
   $("upd").textContent=`${ITEMS.filter(it=>diff(it.date)>=0).length}件の予定`+(u?`・最終更新 ${u.getMonth()+1}/${u.getDate()} ${pad(u.getHours())}:${pad(u.getMinutes())}`:"");
   render();renderWeek();
+  if(q0)$("q").scrollIntoView({block:"start"});
 }catch(e){$("upd").textContent="データを読み込めませんでした。時間をおいて再読み込みしてください。"}})();
 </script>
 </body>

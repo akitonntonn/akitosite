@@ -146,6 +146,7 @@ p{margin:.5em 0}
     <p class="lead">好きな音楽や過ごし方についての10問に答えると、この1年チャート上位に入ったアーティスト50組から、あなたにぴったりの1組がわかります。</p>
     <p class="mute">K-POPを知らなくても大丈夫です。合う理由と、最初に聴くならこの1曲、までお届けします。所要時間は約2分です。</p>
     <div class="row"><button class="btn" id="go">診断をはじめる</button></div>
+    <p class="mute" style="margin-top:14px">推しのカムバ日程は <a href="/kpop-comeback/">K-POPカムバカレンダー</a> でチェック📅</p>
   </div>
 </section>
 
@@ -174,7 +175,7 @@ p{margin:.5em 0}
     <div class="toast" id="toast" role="status"></div>
   </div>
   <div class="card" style="margin-top:20px">
-    <div class="row" style="margin-top:0"><button class="btn" id="again">もう一度診断する</button><a class="btn sub" href="#zukan" id="tozk">50組のアーティスト一覧</a></div>
+    <div class="row" style="margin-top:0"><button class="btn" id="again">もう一度診断する</button><a class="btn sub" href="#zukan" id="tozk">50組のアーティスト一覧</a><a class="btn sub" href="/kpop-comeback/">K-POPカムバカレンダー</a></div>
   </div>
 </section>
 
@@ -338,6 +339,7 @@ const renderR=(i,v)=>{
    <div class="sec"><h3>${v?"あなたに合う理由":"こんな人におすすめ"}</h3><p class="tip">${esc(p[8])}</p></div>
    <div class="sec"><h3>最初に聴くならこの1曲</h3><div class="song">${note}<div><div class="st">${esc(p[9])}</div><div class="mute" style="margin:2px 0 0">${esc(p[10])}</div></div></div>
     <div class="row"><a class="btn sm" href="https://www.youtube.com/results?search_query=${qs}" target="_blank" rel="noopener">YouTubeで探す</a><a class="btn sub sm" href="https://open.spotify.com/search/${qs}" target="_blank" rel="noopener">Spotifyで探す</a></div></div>
+   <div class="sec"><h3>次のカムバはいつ？</h3><p class="mute" style="margin-top:0">${esc(p[0])}の新曲・アルバムのリリース予定をカレンダーでチェックできます。</p><div class="row" style="margin-top:8px"><a class="btn sub sm" href="/kpop-comeback/?q=${encodeURIComponent(p[0])}">${esc(p[0])}のカムバ予定を見る</a></div></div>
    <div class="sec"><h3>${v?"あなたの音楽の好み":"このアーティストの雰囲気"}</h3><div class="axes">${AX.map((a,k)=>`<div class="ax"><span>${a[0]}</span><div class="track"><i style="left:${(axes[k]+2)/4*100}%"></i></div><span>${a[1]}</span></div>`).join("")}</div></div>`;
   $("rcard").classList.remove("pop");void $("rcard").offsetWidth;$("rcard").classList.add("pop");
   const url=location.origin+location.pathname;
