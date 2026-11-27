@@ -3,12 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>おすすめK-POP診断</title>
+<title>おすすめK-POP診断｜10問であなたにぴったりのアーティストと最初の1曲がわかる【無料】</title>
 <meta name="description" content="10問に答えるだけで、この1年チャート上位に入ったK-POPアーティスト50組から、あなたにぴったりの1組と最初に聴く1曲がわかります。K-POPを知らなくても楽しめます。">
-<meta property="og:title" content="おすすめK-POP診断">
+<meta property="og:title" content="おすすめK-POP診断｜あなたにぴったりのK-POPアーティストは？">
 <meta property="og:description" content="10問であなたにぴったりのK-POPアーティストがわかる。合う理由と、最初に聴く1曲つき。">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
+<meta property="og:url" content="https://akitosite.pages.dev/kpop-shindan/">
+<meta property="og:image" content="https://akitosite.pages.dev/kpop-shindan/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AKITO SAKAI | Creative Hub">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://akitosite.pages.dev/kpop-shindan/">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "おすすめK-POP診断", "url": "https://akitosite.pages.dev/kpop-shindan/", "description": "10問に答えるだけで、この1年チャート上位に入ったK-POPアーティスト50組から、あなたにぴったりの1組と最初に聴く1曲がわかります。K-POPを知らなくても楽しめます。", "applicationCategory": "GameApplication", "operatingSystem": "Web", "inLanguage": "ja", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "JPY"}, "image": "https://akitosite.pages.dev/kpop-shindan/og.png"}</script>
 <meta name="theme-color" content="#e9408f">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect x='42' y='52' width='16' height='44' rx='6' fill='%231b1530'/%3E%3Ccircle cx='50' cy='34' r='28' fill='%23e9408f' stroke='%231b1530' stroke-width='6'/%3E%3Cpath d='M50 46l-11-11a7 7 0 0 1 11-9 7 7 0 0 1 11 9z' fill='%23fff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -89,6 +97,7 @@ p{margin:.5em 0}
 .zc.me .nm::after{content:"　← あなた";color:var(--ball);font-size:13px}
 .toast{min-height:1.5em;font-size:14px;font-weight:700;color:var(--ballD)}
 .hide{display:none}
+.shot{display:block;width:100%;height:auto;aspect-ratio:1200/630;margin-top:12px;border:2px solid var(--line);border-radius:12px;background:var(--bg2)}
 .pop{animation:pop .45s ease-out}
 @keyframes pop{from{transform:translateY(12px) scale(.97);opacity:0}to{transform:none;opacity:1}}
 @media(prefers-reduced-motion:reduce){.pop{animation:none}.bar i{transition:none}}
@@ -154,11 +163,13 @@ p{margin:.5em 0}
   <div class="card pop" id="rcard"></div>
   <div class="card" style="margin-top:20px">
     <h3 style="margin:0 0 4px;font-size:17px">結果をシェアする</h3>
-    <p class="mute">結果とこの診断のリンクをまとめて送れます。</p>
+    <p class="mute">結果の画像つきで投稿すると、見た友だちも診断しに来てくれます。</p>
+    <img class="shot" id="shot" alt="診断結果の画像" width="1200" height="630">
     <div class="row">
-      <button class="btn" id="copy">結果の文章をコピー</button>
+      <button class="btn" id="imgshare">画像つきでシェア</button>
       <a class="btn sub" id="xshare" href="#" target="_blank" rel="noopener">Xでポスト</a>
       <a class="btn sub" id="lshare" href="#" target="_blank" rel="noopener">LINEで送る</a>
+      <button class="btn sub" id="copy">文章をコピー</button>
     </div>
     <div class="toast" id="toast" role="status"></div>
   </div>
@@ -176,6 +187,7 @@ p{margin:.5em 0}
 </section>
 
 </div>
+<script src="/assets/share-card.js"></script>
 <script>
 {
 // DATA-START
@@ -273,6 +285,48 @@ const cover=p=>{const ini=p[0].replace(/[^A-Za-z0-9]/g,"").slice(0,2).toUpperCas
   <path d="M4 78c24-14 48 10 96-6v22a8 8 0 0 1-8 8H12a8 8 0 0 1-8-8z" fill="${p[4]}" opacity=".55"/>
   <text x="14" y="62" font-family="Dela Gothic One" font-size="30" fill="#fff" stroke="#1b1530" stroke-width="1.2">${esc(ini)}</text></svg>`};
 const note=`<svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="20" fill="#e9408f" stroke="#1b1530" stroke-width="2.5"/><path d="M18 30V14l12-3v15" fill="none" stroke="#fff" stroke-width="3"/><circle cx="15.5" cy="30" r="3.5" fill="#fff"/><circle cx="27.5" cy="26" r="3.5" fill="#fff"/></svg>`;
+
+// 結果画像カード（オリジナル配色の「ジャケット風」図形。写真・ロゴは使わない）
+const SITE="akitosite.pages.dev/kpop-shindan",TAG="#おすすめKPOP診断";
+const drawCard=async(p,mine)=>{
+  const SC=ShareCard,ini=p[0].replace(/[^A-Za-z0-9]/g,"").slice(0,2).toUpperCase();
+  const lab=mine?"おすすめK-POP診断｜私にぴったりなのは…":"おすすめK-POP診断";
+  const all=lab+p[5]+p[0]+p[1]+p[2]+"最初に聴くならこの1曲♪"+p[9]+SITE+TAG+"…";
+  await SC.fonts([['400 40px "Dela Gothic One"',p[0]+ini],['900 30px "Zen Kaku Gothic New"',all],['700 30px "Zen Kaku Gothic New"',all]]);
+  const [c,x]=SC.make(),ink="#1b1530",mute="#62557a";
+  x.fillStyle="#f4e6f4";x.fillRect(0,0,1200,630);
+  x.fillStyle="rgba(27,21,48,.16)";for(let i=11;i<1200;i+=22)for(let j=11;j<630;j+=22){x.beginPath();x.arc(i,j,1.6,0,Math.PI*2);x.fill()}
+  SC.panel(x,"#fffafd",ink);
+  x.save();x.translate(92,140);x.scale(3,3);
+  SC.rr(x,10,14,96,96,8);x.fillStyle="rgba(27,21,48,.2)";x.fill();
+  SC.rr(x,4,6,96,96,8);x.fillStyle=p[3];x.fill();x.lineWidth=3;x.strokeStyle=ink;x.stroke();
+  x.save();SC.rr(x,4,6,96,96,8);x.clip();
+  x.beginPath();x.arc(74,34,20,0,Math.PI*2);x.globalAlpha=.9;x.fillStyle=p[4];x.fill();
+  x.globalAlpha=.55;x.fill(new Path2D("M4 78c24-14 48 10 96-6v22a8 8 0 0 1-8 8H12a8 8 0 0 1-8-8z"));x.restore();
+  SC.rr(x,4,6,96,96,8);x.lineWidth=3;x.strokeStyle=ink;x.stroke();
+  x.font='400 30px "Dela Gothic One"';x.fillStyle="#fff";x.fillText(ini,14,62);x.lineWidth=1.2;x.strokeStyle=ink;x.strokeText(ini,14,62);
+  x.restore();
+  const X=480,MW=630;x.textAlign="left";
+  x.fillStyle=mute;x.font='700 26px "Zen Kaku Gothic New"';x.fillText(lab,X,112);
+  SC.pill(x,p[5],X,134,'900 27px "Zen Kaku Gothic New"',"#e9408f","#fff",ink);
+  SC.fit(x,p[0],'400 {s}px "Dela Gothic One"',76,MW,34);x.fillStyle=ink;x.fillText(p[0],X,266);
+  x.fillStyle=mute;x.font='700 24px "Zen Kaku Gothic New"';x.fillText(p[1],X,306);
+  x.fillStyle=p[3];x.fillRect(X,324,22,22);x.lineWidth=2;x.strokeStyle=ink;x.strokeRect(X,324,22,22);
+  x.fillStyle=ink;x.font='700 24px "Zen Kaku Gothic New"';SC.wrap(x,p[2],X+34,344,MW-34,32,1);
+  x.fillStyle="#b81e68";x.font='900 22px "Zen Kaku Gothic New"';x.fillText("最初に聴くならこの1曲",X,404);
+  x.fillStyle=ink;SC.fit(x,"♪ "+p[9],'900 {s}px "Zen Kaku Gothic New"',38,MW,24);x.fillText("♪ "+p[9],X,454);
+  x.fillStyle="#e8d0ea";x.fillRect(X,510,MW,2);
+  x.font='700 21px "Zen Kaku Gothic New"';x.fillStyle=mute;x.fillText(SITE,X,548);
+  x.textAlign="right";x.fillStyle="#b81e68";x.font='900 22px "Zen Kaku Gothic New"';x.fillText(TAG,X+MW,548);
+  return c};
+const canFile=(()=>{try{return !!(navigator.canShare&&navigator.canShare({files:[new File([""],"a.png",{type:"image/png"})]}))}catch(e){return false}})();
+$("imgshare").textContent=canFile?"画像つきでシェア":"結果の画像を保存";
+let cardC=null,cardP=null,cardN=0;
+const makeCard=async(p,mine)=>{const n=++cardN;cardC=null;cardP=p;$("shot").removeAttribute("src");
+  const c=await drawCard(p,mine);if(n!==cardN)return;cardC=c;$("shot").src=c.toDataURL("image/png")};
+$("imgshare").onclick=async()=>{if(!cardC)return;const p=cardP;
+  const r=await ShareCard.share(cardC,"kpop-shindan-"+slug(p)+".png",$("copy").dataset.t);
+  if(r==="saved")$("toast").textContent="画像を保存しました。「Xでポスト」を押して、投稿に画像を添付するとより目立ちます。"};
 const renderR=(i,v)=>{
   const p=P[i];me=i;
   const axes=(v||p[6]);
@@ -291,6 +345,7 @@ const renderR=(i,v)=>{
   $("xshare").href="https://twitter.com/intent/tweet?text="+encodeURIComponent(txt)+"&url="+encodeURIComponent(url);
   $("lshare").href="https://social-plugins.line.me/lineit/share?text="+encodeURIComponent(txt)+"&url="+encodeURIComponent(url);
   $("copy").dataset.t=txt+"\n"+url;$("toast").textContent="";
+  makeCard(p,!!v);
   try{history.replaceState(null,"","#"+slug(p))}catch(e){}
   show("result");
 };

@@ -3,12 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ポモドーロ勉強タイマー</title>
+<title>ポモドーロ勉強タイマー｜25分集中・勉強時間を自動記録できる無料タイマー</title>
 <meta name="description" content="25分集中して5分休む、ポモドーロ・テクニックの勉強タイマー。今日の勉強時間と直近7日の記録がブラウザに自動で残ります。登録不要・無料。">
-<meta property="og:title" content="ポモドーロ勉強タイマー">
+<meta property="og:title" content="ポモドーロ勉強タイマー｜25分集中＋勉強時間の自動記録">
 <meta property="og:description" content="25分集中→5分休憩をくり返す勉強タイマー。今日の勉強時間を自動で記録。">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
+<meta property="og:url" content="https://akitosite.pages.dev/pomodoro/">
+<meta property="og:image" content="https://akitosite.pages.dev/pomodoro/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AKITO SAKAI | Creative Hub">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://akitosite.pages.dev/pomodoro/">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "ポモドーロ勉強タイマー", "url": "https://akitosite.pages.dev/pomodoro/", "description": "25分集中して5分休む、ポモドーロ・テクニックの勉強タイマー。今日の勉強時間と直近7日の記録がブラウザに自動で残ります。登録不要・無料。", "applicationCategory": "EducationalApplication", "operatingSystem": "Web", "inLanguage": "ja", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "JPY"}, "image": "https://akitosite.pages.dev/pomodoro/og.png"}</script>
 <meta name="theme-color" content="#e2553b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='56' r='38' fill='%23e2553b' stroke='%23231a14' stroke-width='6'/%3E%3Cpath d='M50 20c-4-8-12-10-18-8 6 2 10 6 12 10M50 20c6-6 14-6 20-2-6 0-12 3-14 7' fill='%232f9e74' stroke='%23231a14' stroke-width='4' stroke-linejoin='round'/%3E%3Cpath d='M50 38v20l12 8' fill='none' stroke='%23fff' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -72,6 +80,8 @@ details[open] summary::after{content:"－"}
 .toggle{display:flex;align-items:center;gap:8px;font-size:14px;margin-top:12px;font-weight:700}
 .toggle input{width:20px;height:20px;accent-color:var(--focus)}
 .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btn.act{background:var(--accent);color:#fff}
+a.btn{text-decoration:none;display:inline-flex;align-items:center}
 .note{font-size:12px;color:var(--mute);margin:10px 0 0}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:999px;font-weight:700;font-size:14px;opacity:0;pointer-events:none;transition:.25s;max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
@@ -119,6 +129,10 @@ details[open] summary::after{content:"－"}
       <div class="bar"><div id="goalBar"></div></div>
       <p id="goalText">目標まであと120分</p>
     </div>
+    <div class="row">
+      <button type="button" class="btn sm act" id="shareToday">今日の記録を画像でシェア</button>
+      <a class="btn sm" id="xToday" href="#" target="_blank" rel="noopener">Xでポスト</a>
+    </div>
   </section>
 
   <section class="card" aria-label="直近7日の記録">
@@ -149,6 +163,7 @@ details[open] summary::after{content:"－"}
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+<script src="/assets/share-card.js"></script>
 <script>
 (() => {
   const $ = id => document.getElementById(id);
@@ -171,6 +186,7 @@ details[open] summary::after{content:"－"}
   const fmt = s => { s = Math.max(0, Math.ceil(s)); return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; };
   const fmtMin = sec => { const m = Math.floor(sec / 60); return m >= 60 ? `${Math.floor(m / 60)}時間${m % 60 ? (m % 60) + "分" : ""}` : `${m}分`; };
 
+  const TITLE = document.title;
   const C = 2 * Math.PI * 54, prog = $("prog");
   prog.style.strokeDasharray = C;
 
@@ -239,7 +255,7 @@ details[open] summary::after{content:"－"}
     const t = fmt(remain);
     $("time").textContent = t;
     prog.style.strokeDashoffset = C * (1 - (total ? remain / total : 0));
-    document.title = running ? `${t} ${mode === "focus" ? "集中" : "休憩"} | ポモドーロ` : "ポモドーロ勉強タイマー";
+    document.title = running ? `${t} ${mode === "focus" ? "集中" : "休憩"} | ポモドーロ` : TITLE;
     const dots = $("dots"); dots.innerHTML = "";
     for (let i = 0; i < S.every; i++) { const d = document.createElement("i"); if (i < done) d.className = "on"; dots.appendChild(d); }
   }
@@ -298,6 +314,69 @@ details[open] summary::after{content:"－"}
 
   let tt;
   function toast(m) { const el = $("toast"); el.textContent = m; el.classList.add("show"); clearTimeout(tt); tt = setTimeout(() => el.classList.remove("show"), 3500); }
+
+  // 今日の記録を画像カードにしてシェア
+  const SITE = "akitosite.pages.dev/pomodoro", TAG = "#ポモドーロ勉強タイマー";
+  const shareText = () => {
+    const t = log[dayKey()] || { sec: 0, count: 0 };
+    return `今日は${fmtMin(t.sec)}勉強しました！（集中${t.count}セット）\n${TAG}\n${location.origin}${location.pathname}`;
+  };
+  function updateX() {
+    $("xToday").href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText());
+  }
+  async function drawToday() {
+    const SC = ShareCard, today = log[dayKey()] || { sec: 0, count: 0 };
+    const W = ["日", "月", "火", "水", "木", "金", "土"], now = new Date();
+    const date = `${now.getMonth() + 1}月${now.getDate()}日（${W[now.getDay()]}）`;
+    const big = fmtMin(today.sec), goal = S.goal * 60, left = Math.ceil((goal - today.sec) / 60);
+    const gtxt = left > 0 ? `目標${fmtMin(goal)}まであと${fmtMin(left * 60)}` : `目標${fmtMin(goal)}達成！`;
+    const days = []; for (let i = 6; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); days.push(d); }
+    const vals = days.map(d => (log[dayKey(d)] || {}).sec || 0), max = Math.max(goal, ...vals);
+    const all = "ポモドーロ勉強タイマー今日の勉強この7日間集中したセット今日分" + date + big + gtxt + W.join("") + vals.map(v => Math.floor(v / 60)).join("") + SITE + TAG + "0123456789回時間";
+    await SC.fonts([['400 40px "Dela Gothic One"', big + "0123456789時間分"], ['900 30px "Zen Kaku Gothic New"', all], ['700 30px "Zen Kaku Gothic New"', all]]);
+    const [c, x] = SC.make(), ink = "#231a14", mute = "#6f6257", red = "#e2553b";
+    x.fillStyle = "#f7efe6"; x.fillRect(0, 0, 1200, 630);
+    SC.panel(x, "#fffaf4", ink);
+    const X = 100;
+    x.fillStyle = mute; x.font = '700 26px "Zen Kaku Gothic New"'; x.fillText("ポモドーロ勉強タイマー｜今日の勉強", X, 112);
+    SC.pill(x, date, X, 134, '900 27px "Zen Kaku Gothic New"', red, "#fff", ink);
+    SC.fit(x, big, '400 {s}px "Dela Gothic One"', 108, 500, 40); x.fillStyle = ink; x.fillText(big, X, 318);
+    x.font = '900 30px "Zen Kaku Gothic New"'; x.fillText(`集中したセット ${today.count}回`, X, 372);
+    SC.rr(x, X, 396, 480, 26, 13); x.fillStyle = "#eadccc"; x.fill();
+    const pct = Math.min(1, today.sec / goal);
+    if (pct > 0) { SC.rr(x, X, 396, Math.max(26, 480 * pct), 26, 13); x.fillStyle = red; x.fill(); }
+    SC.rr(x, X, 396, 480, 26, 13); x.lineWidth = 3; x.strokeStyle = ink; x.stroke();
+    x.fillStyle = left > 0 ? mute : "#1f7655"; x.font = '900 24px "Zen Kaku Gothic New"'; x.fillText(gtxt, X, 458);
+    // 右：7日間の棒グラフ
+    const GX = 660, GW = 450, top = 150, bot = 440;
+    x.fillStyle = mute; x.font = '700 24px "Zen Kaku Gothic New"'; x.fillText("この7日間（分）", GX, 112);
+    x.fillStyle = "#eadccc"; x.fillRect(GX, bot, GW, 3);
+    const bw = 46, gap = (GW - bw * 7) / 6;
+    vals.forEach((v, i) => {
+      const bx = GX + i * (bw + gap), h = Math.max(4, v / max * (bot - top - 40));
+      SC.rr(x, bx, bot - h, bw, h, 8); x.fillStyle = i === 6 ? red : "#f0b7a6"; x.fill();
+      x.lineWidth = 2.5; x.strokeStyle = ink; x.stroke();
+      x.textAlign = "center"; x.fillStyle = ink; x.font = '900 20px "Zen Kaku Gothic New"';
+      const m = Math.floor(v / 60); if (m) x.fillText(m, bx + bw / 2, bot - h - 10);
+      x.fillStyle = i === 6 ? red : mute; x.font = '900 20px "Zen Kaku Gothic New"';
+      x.fillText(i === 6 ? "今日" : W[days[i].getDay()], bx + bw / 2, bot + 32);
+      x.textAlign = "left";
+    });
+    x.fillStyle = "#eadccc"; x.fillRect(X, 510, 1010, 2);
+    x.font = '700 21px "Zen Kaku Gothic New"'; x.fillStyle = mute; x.fillText(SITE, X, 548);
+    x.textAlign = "right"; x.fillStyle = red; x.font = '900 22px "Zen Kaku Gothic New"'; x.fillText(TAG, 1110, 548); x.textAlign = "left";
+    return c;
+  }
+  window.__drawToday = drawToday;
+  $("shareToday").onclick = async () => {
+    flushStudy(); renderStats();
+    const t = log[dayKey()] || { sec: 0 };
+    if (t.sec < 60) { toast("1分以上勉強したらシェアできます"); return; }
+    const c = await drawToday();
+    const r = await ShareCard.share(c, `pomodoro-${dayKey()}.png`, shareText());
+    if (r === "saved") toast("画像を保存しました。Xの投稿に添付してね");
+  };
+  $("xToday").addEventListener("click", updateX); updateX();
 
   // 操作
   $("start").onclick = () => running ? stop() : start();

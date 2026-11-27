@@ -3,12 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NBA選手タイプ診断</title>
+<title>NBA選手タイプ診断｜10問であなたに似たNBAスターがわかる【無料】</title>
 <meta name="description" content="10問の性格診断で、NBA30チームのスター選手からあなたに似た1人がわかります。バスケを知らなくても楽しめます。">
-<meta property="og:title" content="NBA選手タイプ診断">
+<meta property="og:title" content="NBA選手タイプ診断｜あなたに似たNBAスターは誰？">
 <meta property="og:description" content="10問であなたに似たNBAスターがわかる。強みと、仕事や勉強に活かすヒントつき。">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary">
+<meta property="og:url" content="https://akitosite.pages.dev/nba-shindan/">
+<meta property="og:image" content="https://akitosite.pages.dev/nba-shindan/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="AKITO SAKAI | Creative Hub">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://akitosite.pages.dev/nba-shindan/">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "NBA選手タイプ診断", "url": "https://akitosite.pages.dev/nba-shindan/", "description": "10問の性格診断で、NBA30チームのスター選手からあなたに似た1人がわかります。バスケを知らなくても楽しめます。", "applicationCategory": "GameApplication", "operatingSystem": "Web", "inLanguage": "ja", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "JPY"}, "image": "https://akitosite.pages.dev/nba-shindan/og.png"}</script>
 <meta name="theme-color" content="#f26b1d">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%23f26b1d' stroke='%2322170f' stroke-width='6'/%3E%3Cpath d='M4 50h92M50 4v92M20 20c14 16 14 44 0 60M80 20c-14 16-14 44 0 60' fill='none' stroke='%2322170f' stroke-width='6'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -88,6 +96,7 @@ p{margin:.5em 0}
 .toast{min-height:1.5em;font-size:14px;font-weight:700;color:var(--ballD)}
 details summary{cursor:pointer;font-weight:900;min-height:44px;display:flex;align-items:center}
 .hide{display:none}
+.shot{display:block;width:100%;height:auto;aspect-ratio:1200/630;margin-top:12px;border:2px solid var(--line);border-radius:12px;background:var(--bg2)}
 .pop{animation:pop .45s ease-out}
 @keyframes pop{from{transform:translateY(12px) scale(.97);opacity:0}to{transform:none;opacity:1}}
 @media(prefers-reduced-motion:reduce){.pop{animation:none}.bar i{transition:none}}
@@ -144,11 +153,13 @@ details summary{cursor:pointer;font-weight:900;min-height:44px;display:flex;alig
   <div class="card pop" id="rcard"></div>
   <div class="card" style="margin-top:20px">
     <h3 style="margin:0 0 4px;font-size:17px">結果をシェアする</h3>
-    <p class="mute">結果とこの診断のリンクをまとめて送れます。</p>
+    <p class="mute">結果の画像つきで投稿すると、見た友だちも診断しに来てくれます。</p>
+    <img class="shot" id="shot" alt="診断結果の画像" width="1200" height="630">
     <div class="row">
-      <button class="btn" id="copy">結果の文章をコピー</button>
+      <button class="btn" id="imgshare">画像つきでシェア</button>
       <a class="btn sub" id="xshare" href="#" target="_blank" rel="noopener">Xでポスト</a>
       <a class="btn sub" id="lshare" href="#" target="_blank" rel="noopener">LINEで送る</a>
+      <button class="btn sub" id="copy">文章をコピー</button>
     </div>
     <div class="toast" id="toast" role="status"></div>
   </div>
@@ -166,6 +177,7 @@ details summary{cursor:pointer;font-weight:900;min-height:44px;display:flex;alig
 </section>
 
 </div>
+<script src="/assets/share-card.js"></script>
 <script>
 {
 // 軸: 0 リーダー(+)/サポート(-), 1 チャレンジ(+)/堅実(-), 2 コツコツ(+)/ひらめき(-), 3 冷静(+)/情熱(-), 4 にぎやか(+)/もの静か(-)
@@ -239,6 +251,49 @@ const jersey=p=>{const ini=p[0].split(/[ .-]/).filter(w=>/^[A-Z]/.test(w)).map(w
   <path d="M50 8c2 9 18 9 20 0" fill="none" stroke="${p[4]}" stroke-width="5"/>
   <path d="M38 8l-4 22M82 8l4 22" stroke="${p[4]}" stroke-width="4" opacity=".9"/>
   <text x="60" y="86" text-anchor="middle" font-family="Dela Gothic One" font-size="30" fill="${p[4]}" stroke="#22170f" stroke-width="1">${esc(ini)}</text></svg>`};
+
+// 結果画像カード（チームカラーのオリジナルユニフォーム図。写真・ロゴは使わない）
+const SITE="akitosite.pages.dev/nba-shindan",TAG="#NBA選手診断";
+const drawCard=async(p,mine)=>{
+  const SC=ShareCard,ini=p[0].split(/[ .-]/).filter(w=>/^[A-Z]/.test(w)).map(w=>w[0]).join("").slice(0,2);
+  const lab=mine?"NBA選手タイプ診断｜私に似ているのは…":"NBA選手タイプ診断";
+  const all=lab+p[5]+p[1]+p[0]+p[2]+"この選手から学べること"+p[8]+SITE+TAG+"…";
+  await SC.fonts([['400 40px "Dela Gothic One"',p[1]+ini],['900 30px "Zen Kaku Gothic New"',all],['700 30px "Zen Kaku Gothic New"',all]]);
+  const [c,x]=SC.make(),ink="#22170f",mute="#6b5643";
+  x.fillStyle="#f1d7ad";x.fillRect(0,0,1200,630);
+  x.fillStyle="#e7c48f";for(let i=46;i<1200;i+=48)x.fillRect(i,0,2,630);
+  SC.panel(x,"#fffaf1",ink);
+  x.save();x.beginPath();x.arc(250,310,180,0,Math.PI*2);x.globalAlpha=.16;x.fillStyle=p[3];x.fill();
+  x.globalAlpha=.25;x.lineWidth=4;x.strokeStyle=ink;x.stroke();x.restore();
+  x.save();x.translate(100,140);x.scale(2.5,2.5);
+  x.beginPath();x.ellipse(60,124,40,5,0,0,Math.PI*2);x.fillStyle="rgba(34,23,15,.18)";x.fill();
+  const body=new Path2D("M38 8h12c2 9 18 9 20 0h12l4 22c6 2 12 6 16 12l-14 8-4-6v76H36V44l-4 6-14-8c4-6 10-10 16-12z");
+  x.fillStyle=p[3];x.fill(body);x.lineJoin="round";x.lineWidth=3;x.strokeStyle=ink;x.stroke(body);
+  x.strokeStyle=p[4];x.lineWidth=5;x.stroke(new Path2D("M50 8c2 9 18 9 20 0"));
+  x.lineWidth=4;x.globalAlpha=.9;x.stroke(new Path2D("M38 8l-4 22M82 8l4 22"));x.globalAlpha=1;
+  x.font='400 30px "Dela Gothic One"';x.textAlign="center";x.fillStyle=p[4];x.fillText(ini,60,86);
+  x.lineWidth=1;x.strokeStyle=ink;x.strokeText(ini,60,86);x.restore();
+  const X=480,MW=630;x.textAlign="left";
+  x.fillStyle=mute;x.font='700 26px "Zen Kaku Gothic New"';x.fillText(lab,X,112);
+  SC.pill(x,p[5],X,134,'900 27px "Zen Kaku Gothic New"',"#f26b1d","#fff",ink);
+  SC.fit(x,p[1],'400 {s}px "Dela Gothic One"',70,MW,34);x.fillStyle=ink;x.fillText(p[1],X,262);
+  x.fillStyle=mute;x.font='700 24px "Zen Kaku Gothic New"';x.fillText(p[0],X,302);
+  x.fillStyle=p[3];x.fillRect(X,320,22,22);x.lineWidth=2;x.strokeStyle=ink;x.strokeRect(X,320,22,22);
+  x.fillStyle=ink;x.font='700 24px "Zen Kaku Gothic New"';x.fillText(p[2],X+34,340);
+  x.fillStyle="#b9480c";x.font='900 22px "Zen Kaku Gothic New"';x.fillText("この選手から学べること",X,400);
+  x.fillStyle=ink;x.font='700 27px "Zen Kaku Gothic New"';SC.wrap(x,p[8],X,442,MW,40,2);
+  x.fillStyle="#e7c48f";x.fillRect(X,494+16,MW,2);
+  x.font='700 21px "Zen Kaku Gothic New"';x.fillStyle=mute;x.fillText(SITE,X,548);
+  x.textAlign="right";x.fillStyle="#b9480c";x.font='900 22px "Zen Kaku Gothic New"';x.fillText(TAG,X+MW,548);
+  return c};
+const canFile=(()=>{try{return !!(navigator.canShare&&navigator.canShare({files:[new File([""],"a.png",{type:"image/png"})]}))}catch(e){return false}})();
+$("imgshare").textContent=canFile?"画像つきでシェア":"結果の画像を保存";
+let cardC=null,cardP=null,cardN=0;
+const makeCard=async(p,mine)=>{const n=++cardN;cardC=null;cardP=p;$("shot").removeAttribute("src");
+  const c=await drawCard(p,mine);if(n!==cardN)return;cardC=c;$("shot").src=c.toDataURL("image/png")};
+$("imgshare").onclick=async()=>{if(!cardC)return;const p=cardP;
+  const r=await ShareCard.share(cardC,"nba-shindan-"+slug(p)+".png",$("copy").dataset.t);
+  if(r==="saved")$("toast").textContent="画像を保存しました。「Xでポスト」を押して、投稿に画像を添付するとより目立ちます。"};
 const renderR=(i,v)=>{
   const p=P[i];me=i;
   const axes=(v||p[6]);
@@ -255,6 +310,7 @@ const renderR=(i,v)=>{
   $("xshare").href="https://twitter.com/intent/tweet?text="+encodeURIComponent(txt)+"&url="+encodeURIComponent(url);
   $("lshare").href="https://social-plugins.line.me/lineit/share?text="+encodeURIComponent(txt)+"&url="+encodeURIComponent(url);
   $("copy").dataset.t=txt+"\n"+url;$("toast").textContent="";
+  makeCard(p,!!v);
   try{history.replaceState(null,"","#"+slug(p))}catch(e){}
   show("result");
 };
