@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-27T05:01:26.637Z",
+ "updated": "2026-11-27T05:07:26.280Z",
  "items": [
   {
    "date": "2026-09-28",
@@ -16,6 +16,54 @@
    "type": "EP",
    "src": "musicbrainz",
    "url": "https://musicbrainz.org/release-group/de0cfab4-bbac-4a1b-9e40-ac2590efc3e2"
+  },
+  {
+   "date": "2026-09-30",
+   "artist": "Cravity",
+   "title": "Sonorous",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-10-01",
+   "artist": "TIOT",
+   "title": "Time for Us",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-10-06",
+   "artist": "KickFlip",
+   "title": "Kick Off the Wall Pt.1",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-10-06",
+   "artist": "Yesung",
+   "title": "Where We Are",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-10-08",
+   "artist": "N.Flying",
+   "title": "Still",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-10-08",
+   "artist": "Yuqi",
+   "title": "27",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
   },
   {
    "date": "2026-10-10",
@@ -43,6 +91,14 @@
   },
   {
    "date": "2026-10-12",
+   "artist": "Modyssey",
+   "title": "2.Multitude: How We Bloom",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-10-12",
    "artist": "NCT WISH",
    "title": "I SPY",
    "type": "EP",
@@ -58,6 +114,54 @@
    "url": "https://musicbrainz.org/release-group/87c3f02c-0891-4a68-81a4-dd45a35bc676"
   },
   {
+   "date": "2026-10-12",
+   "artist": "Sung Han-bin",
+   "title": "Dead:Alive",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-10-12",
+   "artist": "Xdinary Heroes",
+   "title": "Impulse",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-10-13",
+   "artist": "Park Woo-jin",
+   "title": "Solstice",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-10-14",
+   "artist": "Nam Woo-hyun",
+   "title": "2X8",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-10-14",
+   "artist": "Yuju",
+   "title": "File.07",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-10-15",
+   "artist": "Hyojung",
+   "title": "Lost&Found",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
    "date": "2026-10-16",
    "artist": "Hearts2Hearts",
    "title": "Next Chapter",
@@ -67,11 +171,35 @@
   },
   {
    "date": "2026-10-19",
+   "artist": "Evnne",
+   "title": "On: Our Noise",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-10-19",
    "artist": "IVE",
    "title": "Looks Can Kill",
    "type": "Single",
    "src": "musicbrainz",
    "url": "https://musicbrainz.org/release-group/f96c5e2d-17d2-4498-b969-6892dbb11232"
+  },
+  {
+   "date": "2026-10-19",
+   "artist": "Jeonghan X Joshua",
+   "title": "Dreamscape",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-10-19",
+   "artist": "Max Changmin",
+   "title": "All of My Life",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
   },
   {
    "date": "2026-10-19",
@@ -122,6 +250,14 @@
    "url": "https://musicbrainz.org/release-group/01ac39b1-0fd9-4878-9fdf-f5949bf11e2c"
   },
   {
+   "date": "2026-10-26",
+   "artist": "Xiaojun",
+   "title": "Hey, Somebody",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
    "date": "2026-10-28",
    "artist": "NMIXX",
    "title": "Blue Valentine -Japanese ver.-",
@@ -130,12 +266,28 @@
    "url": "https://musicbrainz.org/release-group/275caaf4-884f-4315-96ec-ca9e9e2851a9"
   },
   {
+   "date": "2026-10-28",
+   "artist": "Xlov",
+   "title": "I=!",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
    "date": "2026-11-02",
    "artist": "TREASURE",
    "title": "SHOCK",
    "type": "Single",
    "src": "musicbrainz",
    "url": "https://musicbrainz.org/release-group/76236e47-640f-4d57-a6f4-2e4e0e8ff5d8"
+  },
+  {
+   "date": "2026-11-02",
+   "artist": "TWS",
+   "title": "To Us",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
   },
   {
    "date": "2026-11-02",
@@ -170,6 +322,22 @@
    "url": "https://musicbrainz.org/release-group/ecd43163-c299-4e94-a83e-6b383867df90"
   },
   {
+   "date": "2026-11-05",
+   "artist": "Unchild",
+   "title": "Ting Ting",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-11-09",
+   "artist": "Chaeryeong",
+   "title": "Lovesick",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
    "date": "2026-11-09",
    "artist": "NCT DREAM",
    "title": "DREAM AFTER DREAM",
@@ -184,6 +352,14 @@
    "type": "Single",
    "src": "musicbrainz",
    "url": "https://musicbrainz.org/release-group/519c5e45-8157-4788-ade8-e223888e7998"
+  },
+  {
+   "date": "2026-11-10",
+   "artist": "Lngshot",
+   "title": "S.W.I.S.H.",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
   },
   {
    "date": "2026-11-13",
@@ -218,6 +394,30 @@
    "url": "https://musicbrainz.org/release-group/895fe6d6-7cc8-43fe-b409-0a94213d62a3"
   },
   {
+   "date": "2026-11-20",
+   "artist": "Nayeon",
+   "title": "Na-sty",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-11-21",
+   "artist": "Deux",
+   "title": "4th Deux",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-11-23",
+   "artist": "Wendy",
+   "title": "Gleam Hour",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
    "date": "2026-11-25",
    "artist": "KISS OF LIFE",
    "title": "Greedy",
@@ -240,6 +440,22 @@
    "type": "Single",
    "src": "musicbrainz",
    "url": "https://musicbrainz.org/release-group/ed712308-ba0a-4da8-9a47-4c171271a669"
+  },
+  {
+   "date": "2026-11-30",
+   "artist": "Taeyeon",
+   "title": "Unspecial",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
+  },
+  {
+   "date": "2026-12-01",
+   "artist": "Exo-KaSe",
+   "title": "Waking Up the Night",
+   "type": "Other",
+   "src": "wikipedia",
+   "url": "https://en.wikipedia.org/wiki/2026_in_South_Korean_music"
   }
  ]
 }
