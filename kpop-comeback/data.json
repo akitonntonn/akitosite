@@ -1,14 +1,6 @@
 {
- "updated": "2026-11-27T05:14:17.018Z",
+ "updated": "2026-11-28T03:10:27.370Z",
  "items": [
-  {
-   "date": "2026-09-28",
-   "artist": "ALLDAY PROJECT",
-   "title": "CRASH",
-   "type": "EP",
-   "src": "musicbrainz",
-   "url": "https://musicbrainz.org/release-group/07235db0-b842-47cd-bf72-2a69f4ce686d"
-  },
   {
    "date": "2026-09-30",
    "artist": "CLOSE YOUR EYES",
@@ -432,6 +424,14 @@
    "type": "Single",
    "src": "musicbrainz",
    "url": "https://musicbrainz.org/release-group/ed712308-ba0a-4da8-9a47-4c171271a669"
+  },
+  {
+   "date": "2026-11-27",
+   "artist": "aespa",
+   "title": "KISS N TELL (English version)",
+   "type": "Single",
+   "src": "musicbrainz",
+   "url": "https://musicbrainz.org/release-group/aac120c0-d788-4036-a1c9-bef7e343781d"
   },
   {
    "date": "2026-11-30",
